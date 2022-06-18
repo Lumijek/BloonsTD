@@ -24,7 +24,7 @@ while True:
 			pygame.quit()
 			sys.exit()
 
-	c_map = load_map("images/Monkey_meadow.png", width, height)
+	c_map = load_map("images/maps/Monkey_meadow.png", width, height)
 	screen.blit(c_map, (0, 0))
 
 	pygame.display.update()
