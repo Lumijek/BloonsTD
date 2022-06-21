@@ -6,19 +6,18 @@ pygame.init()
 width = 1000
 height = 600
 
-
 screen = pygame.display.set_mode((width, height))
 
 pygame.display.set_caption("Bloons Tower Defense")
 
 clock = pygame.time.Clock()
 
+font = pygame.font.SysFont("Arial" , 18 , bold = True)
+
 def load_map(map_name, width, height):
 	current_map = pygame.image.load(map_name)
 	current_map = pygame.transform.scale(current_map, (width, height))
 	return current_map
-
-font = pygame.font.SysFont("Arial" , 18 , bold = True)
 
 def update_fps():
 	fps = str(int(clock.get_fps()))
