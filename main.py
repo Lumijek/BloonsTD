@@ -1,3 +1,4 @@
+import ast
 import math
 import pygame
 import sys
@@ -14,6 +15,15 @@ pygame.display.set_caption("Bloons Tower Defense")
 clock = pygame.time.Clock()
 
 font = pygame.font.SysFont("Arial", 18, bold=True)
+lines = []
+with open("assets/map_1.txt", "r") as f:
+    for line in f:
+        lines.append(line.strip())
+lines = set(lines)
+path = []
+for coordinate in lines:
+    coord = ast.literal_eval(coordinate)
+    path.append(coord)
 
 
 def load_map(map_name, width, height):
@@ -73,7 +83,13 @@ def can_place_tower(middle_pixel_path, point, path_radius, tower_radius):
 
 while True:
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = pygame.mouse.get_pos()
+            coord = (x, y)
+            print(can_place_tower(path, coord, 25, 0))
+
         if event.type == pygame.QUIT:
+            f.close()
             pygame.quit()
             sys.exit()
 
@@ -81,6 +97,5 @@ while True:
         screen, "images/maps/bloon_map_1.png", "images/utility/brick_divider.png"
     )
     screen.blit(update_fps(), (10, 0))
-
     pygame.display.update()
     clock.tick(60)
