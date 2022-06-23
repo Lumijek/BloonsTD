@@ -1,6 +1,6 @@
 import math
 class Tower:
-    def __init__(self,length,height,xCoord,yCoord,rangeR,price,splash):
+    def __init__(self,length,height,xCoord,yCoord,rangeR,price,splash,damage):
         self.length = length
         self.height = height
         self.xCoord = xCoord
@@ -8,6 +8,7 @@ class Tower:
         self.rangeR = rangeR
         self.price = price
         self.splash = splash
+        self.damage = damage
     def inRange(self, balloonX, balloonY):
         xDiff = abs(balloonX-self.xCoord)
         yDiff = abs(balloonY-self.yCoord)
@@ -15,5 +16,20 @@ class Tower:
             return True
         else:
             return False
-    def splashRange(self,balloonX, balloonY,splashR):
+    #Thinking about this still
+    '''def splashRange(self,balloonX, balloonY,splashR):
+        if self.splash:
+            return True
+        else:
+            return False'''
+    def shoot(self,balloon):
+        #if splash = true, will be called in here as well
+        if self.inRange(balloon.getX(),balloon.getY()):
+            balloon.setHealth(balloon.getHealth-self.damage)
         
+
+    def getX(self):
+        return self.xCoord
+    def getY(self):
+        return self.yCoord
+
