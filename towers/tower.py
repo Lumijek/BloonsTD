@@ -10,9 +10,9 @@ class Tower:
         self.splash = splash
         self.damage = damage
     def inRange(self, balloonX, balloonY):
-        xDiff = abs(balloonX-self.xCoord)
-        yDiff = abs(balloonY-self.yCoord)
-        if math.sqrt(xDiff**2 + yDiff**2)<=self.rangeR:
+        xDiff = balloonX-self.xCoord
+        yDiff = balloonY-self.yCoord
+        if xDiff**2 + yDiff**2<=self.rangeR**2:
             return True
         else:
             return False
@@ -24,8 +24,8 @@ class Tower:
             return False'''
     def shoot(self,balloon):
         #if splash = true, will be called in here as well
-        if self.inRange(balloon.getX(),balloon.getY()):
-            balloon.setHealth(balloon.getHealth-self.damage)
+        if self.inRange(balloon.getX(), balloon.getY()):
+            balloon.setHealth(balloon.getHealth - self.damage)
         
 
     def getX(self):
