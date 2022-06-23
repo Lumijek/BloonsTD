@@ -1,8 +1,11 @@
 import ast
 import math
+import numpy as np
 import pygame
 import sys
 
+from scipy import spatial
+import time
 pygame.init()
 
 width = 1000
@@ -16,9 +19,11 @@ clock = pygame.time.Clock()
 
 font = pygame.font.SysFont("Arial", 18, bold=True)
 lines = []
+
 with open("assets/map_1.txt", "r") as f:
     for line in f:
         lines.append(line.strip())
+
 lines = set(lines)
 path = []
 for coordinate in lines:
@@ -62,15 +67,9 @@ def euclidian_distance(point1, point2):
 
 
 def find_closest_point(middle_pixel_path, point):
-    min_distance = 100000000
-    closest_point = None
-    for position in middle_pixel_path:
-        distance = calculate_distance_without_sqrt(position, point)
-        if distance < min_distance:
-            closest_point = position
-            min_distance = distance
-    return closest_point
-
+    path_pixels = np.asarray(middle_pixel_path)
+    x = path_pixels[spatial.KDTree(path_pixels).query(point)[1]]
+    return tuple(x)
 
 def can_place_tower(middle_pixel_path, point, path_radius, tower_radius):
     # middle_pixel_path = filter_points(middle_pixel_path, point) Filter points to reduce number of points in calculations
