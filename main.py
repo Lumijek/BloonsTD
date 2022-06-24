@@ -6,6 +6,7 @@ import sys
 
 from scipy import spatial
 import time
+
 pygame.init()
 
 width = 1000
@@ -70,6 +71,7 @@ def find_closest_point(middle_pixel_path, point):
     path_pixels = np.asarray(middle_pixel_path)
     x = path_pixels[spatial.KDTree(path_pixels).query(point)[1]]
     return tuple(x)
+
 
 def can_place_tower(middle_pixel_path, point, path_radius, tower_radius):
     # middle_pixel_path = filter_points(middle_pixel_path, point) Filter points to reduce number of points in calculations
