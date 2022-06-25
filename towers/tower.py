@@ -27,10 +27,10 @@ class Tower:
         else:
             return False"""
 
-    def shoot(self, balloon):
+    def shoot(self, bullet, balloon):
         # if splash = true, will be called in here as well
         if self.inRange(balloon.getX(), balloon.getY()):
-            balloon.setHealth(balloon.getHealth - self.damage)
+            bullet(balloon)
 
     def getX(self):
         return self.xCoord
