@@ -43,14 +43,11 @@ class Balloon:
 		changey = y2 - y1
 		angle = math.atan2(changey, changex)
 
-		self.x += math.cos(angle)
-		self.y += math.sin(angle)
+		self.x += math.cos(angle) * self.velocity
+		self.y += math.sin(angle) * self.velocity
 
-		self.move_distance = math.sqrt((self.x - x1) ** 2 + (self.y - y1) ** 2)
-		tot_dis = math.sqrt((x2-x1) ** 2 + (y2-y1) ** 2)
-		if self.move_distance >= tot_dis:
+		if round(self.x) == x2 and round(self.y) == y2:
 			self.path_index += 1
-
 
 
 		

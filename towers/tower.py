@@ -1,31 +1,22 @@
 import math
 
-
 class Tower:
-    def __init__(self, length, height, xCoord, yCoord, rangeR, price, splash, damage):
-        self.length = length
-        self.height = height
-        self.xCoord = xCoord
-        self.yCoord = yCoord
-        self.rangeR = rangeR
-        self.price = price
-        self.splash = splash
-        self.damage = damage
+    def __init__(self, x, y):
+        self.length = None
+        self.height = None
+        self.x = x
+        self.y = y
+        self.rangeR = None
+        self.price = None
+        self.damage = None
 
-    def inRange(self, balloonX, balloonY):
-        xDiff = balloonX - self.xCoord
-        yDiff = balloonY - self.yCoord
-        if xDiff**2 + yDiff**2 <= self.rangeR**2:
+    def inRange(self, balloon_x, balloon_y):
+        xDiff = balloon_x - self.x
+        yDiff = balloon_y - self.y
+        if xDiff ** 2 + yDiff ** 2 <= self.rangeR ** 2:
             return True
         else:
             return False
-
-    # Thinking about this still
-    """def splashRange(self,balloonX, balloonY,splashR):
-        if self.splash:
-            return True
-        else:
-            return False"""
 
     def shoot(self, bullet, balloon):
         # if splash = true, will be called in here as well
