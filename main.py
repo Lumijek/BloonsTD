@@ -7,6 +7,10 @@ import sys
 from scipy import spatial
 import time
 
+from balloons import balloon
+
+bbb = balloon.Balloon()
+
 pygame.init()
 
 width = 1000
@@ -81,13 +85,11 @@ def can_place_tower(middle_pixel_path, point, path_radius, tower_radius):
         return True
     return False
 
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
             coord = (x, y)
-            print(can_place_tower(path, coord, 25, 0))
 
         if event.type == pygame.QUIT:
             f.close()
@@ -97,6 +99,8 @@ while True:
     display_map(
         screen, "images/maps/bloon_map_1.png", "images/utility/brick_divider.png"
     )
+    
+    bbb.draw(screen)
     screen.blit(update_fps(), (10, 0))
     pygame.display.update()
     clock.tick(60)
