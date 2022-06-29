@@ -28,3 +28,7 @@ class Tower:
 
     def getY(self):
         return self.yCoord
+
+    def bulletTarget(self, balloon):
+        diffX = self.x - balloon.getX()
+        diffY = self.y - balloon.getY()

@@ -49,5 +49,9 @@ class Balloon:
 		if round(self.x) == x2 and round(self.y) == y2:
 			self.path_index += 1
 
+	def getX(self):
+		return self.x
+	def getY(self):
+		return self.y
 
 		
