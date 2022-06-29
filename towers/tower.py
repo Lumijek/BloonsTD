@@ -1,5 +1,7 @@
 import math
 
+from sqlalchemy import false
+
 class Tower:
     def __init__(self, x, y):
         self.length = None
@@ -28,7 +30,22 @@ class Tower:
 
     def getY(self):
         return self.yCoord
-
+    '''Returns position vector at which to "send" the dart'''
     def bulletTarget(self, balloon):
         diffX = self.x - balloon.getX()
         diffY = self.y - balloon.getY()
+        run = True
+        count = 0
+        while run:
+            count+=1
+            if (count*self.velocity) ** 2 >= diffX ** 2 + diffY ** 2:
+                run = False
+                diffX += balloon.getXVel()
+                diffY += balloon.getYVel()
+                return math.atan(abs(diffY/diffX))
+            diffX += balloon.getXVel()
+            diffY += balloon.getYVel()
+            if count >= 5:
+                run = false
+                return 0
+            

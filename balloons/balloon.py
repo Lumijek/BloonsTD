@@ -13,6 +13,7 @@ class Balloon:
 		self.y = self.path[0][1]
 		self.path_index = 0
 		self.move_distance = 0
+		self.currAngle = 0
 
 
 
@@ -45,7 +46,7 @@ class Balloon:
 
 		self.x += math.cos(angle) * self.velocity
 		self.y += math.sin(angle) * self.velocity
-
+		self.currAngle = angle
 		if round(self.x) == x2 and round(self.y) == y2:
 			self.path_index += 1
 
@@ -53,5 +54,10 @@ class Balloon:
 		return self.x
 	def getY(self):
 		return self.y
+
+	def getXVel(self):
+		return math.cos(self.currAngle) * self.velocity
+	def getYVel(self):
+		return math.sin(self.currAngle) * self.velocity
 
 		
