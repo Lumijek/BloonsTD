@@ -8,8 +8,10 @@ from scipy import spatial
 import time
 
 from balloons import balloon
+from towers import tower
 
 bbb = balloon.Balloon()
+ttt = tower.Tower(320, 320)
 
 pygame.init()
 
@@ -101,6 +103,9 @@ while True:
     )
     
     bbb.draw(screen)
+
+    ttt.draw2(screen, bbb)
+    ttt.draw(screen)
     screen.blit(update_fps(), (10, 0))
     pygame.display.update()
     clock.tick(60)
