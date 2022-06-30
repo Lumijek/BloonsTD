@@ -13,12 +13,12 @@ pygame.init()
 WIDTH = 1000
 HEIGHT = 600
 
-class Game:
 
+class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Bloons Tower Defense")
-        self.fps_font = pygame.font.SysFont("Arial", 18, bold = True)
+        self.fps_font = pygame.font.SysFont("Arial", 18, bold=True)
         self.path = []
         self.load_path()
         self.clock = pygame.time.Clock()
@@ -83,9 +83,11 @@ class Game:
                     sys.exit()
 
             self.display_map(
-                self.screen, "images/maps/bloon_map_1.png", "images/utility/brick_divider.png"
+                self.screen,
+                "images/maps/bloon_map_1.png",
+                "images/utility/brick_divider.png",
             )
-    
+
             bbb.draw(self.screen)
 
             if ttt.in_range(bbb):
@@ -106,8 +108,8 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     game = Game()
     game.load_path()
     game.run()
-

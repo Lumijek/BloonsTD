@@ -3,6 +3,7 @@ import pygame
 
 from sqlalchemy import false
 
+
 class Tower:
     def __init__(self, x, y):
         self.length = None
@@ -15,13 +16,13 @@ class Tower:
         self.velocity = 2
         self.img = pygame.image.load("images/tower_images/tt.png")
         self.img = pygame.transform.scale(self.img, (60, 60))
-        self.reload_tick = [0, 20] # number of frames to wait before shooting again
+        self.reload_tick = [0, 20]  # number of frames to wait before shooting again
         self.is_reloading = False
 
     def in_range(self, balloon):
         xDiff = balloon.getX() - self.x
         yDiff = balloon.getY() - self.y
-        if xDiff ** 2 + yDiff ** 2 <= self.rangeR ** 2:
+        if xDiff**2 + yDiff**2 <= self.rangeR**2:
             return True
         else:
             return False
@@ -61,7 +62,3 @@ class Tower:
 
     def getY(self):
         return self.y
-
-
-
-            
