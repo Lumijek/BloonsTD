@@ -14,9 +14,6 @@ class Balloon:
 		self.path_index = 0
 		self.move_distance = 0
 		self.currAngle = 0
-		self.mark = False
-
-
 
 	def load(self):
 		path_coords = []

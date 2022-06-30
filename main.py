@@ -1,111 +1,113 @@
 import ast
 import math
-import numpy as np
 import pygame
 import sys
 
-from scipy import spatial
-import time
-
+from utility import *
 from balloons import balloon
 from towers import tower
-
-bbb = balloon.Balloon()
-ttt = tower.Tower(320, 320)
+from projectiles import projectile
 
 pygame.init()
 
-width = 1000
-height = 600
+WIDTH = 1000
+HEIGHT = 600
 
-screen = pygame.display.set_mode((width, height))
+class Game:
 
-pygame.display.set_caption("Bloons Tower Defense")
+    def __init__(self):
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("Bloons Tower Defense")
+        self.fps_font = pygame.font.SysFont("Arial", 18, bold = True)
+        self.path = []
+        self.load_path()
+        self.clock = pygame.time.Clock()
 
-clock = pygame.time.Clock()
+    def load_path(self):
+        lines = []
+        with open("assets/map_1.txt", "r") as f:
+            for line in f:
+                lines.append(line.strip())
 
-font = pygame.font.SysFont("Arial", 18, bold=True)
-lines = []
+        lines = set(lines)
+        for coordinate in lines:
+            coord = ast.literal_eval(coordinate)
+            self.path.append(coord)
 
-with open("assets/map_1.txt", "r") as f:
-    for line in f:
-        lines.append(line.strip())
+    def load_map(self, map_name, width, height):
 
-lines = set(lines)
-path = []
-for coordinate in lines:
-    coord = ast.literal_eval(coordinate)
-    path.append(coord)
+        current_map = pygame.image.load(map_name)
+        current_map = pygame.transform.scale(current_map, (width, height))
+        current_map = pygame.transform.rotate(current_map, 0)
 
+        return current_map
 
-def load_map(map_name, width, height):
-    current_map = pygame.image.load(map_name)
-    current_map = pygame.transform.scale(current_map, (width, height))
-    current_map = pygame.transform.rotate(current_map, 0)
+    def display_map(self, screen, map_name, divider):
+        red_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
+        blue_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
+        divider = pygame.image.load(divider)
 
-    return current_map
+        blue_map = pygame.transform.flip(blue_map, True, False)
+        divider = pygame.transform.scale(divider, (30, HEIGHT))
 
+        self.screen.blit(red_map, (0, 0))
+        self.screen.blit(blue_map, (WIDTH / 2 + 15, 0))
+        self.screen.blit(divider, (WIDTH / 2 - 15, 0))
 
-def display_map(screen, map_name, divider):
-    red_map = load_map(map_name, width / 2 - 15, height)
-    blue_map = load_map(map_name, width / 2 - 15, height)
-    divider = pygame.image.load(divider)
+    def update_fps(self):
+        fps = str(int(self.clock.get_fps()))
+        fps_text = self.fps_font.render(fps, 1, pygame.Color("WHITE"))
+        return fps_text
 
-    blue_map = pygame.transform.flip(blue_map, True, False)
-    divider = pygame.transform.scale(divider, (30, height))
+    def can_place_tower(self, middle_pixel_path, point, path_radius, tower_radius):
+        closest_point = find_closest_point(middle_pixel_path, point)
+        true_distance = euclidian_distance(closest_point, point)
+        if true_distance > path_radius + tower_radius:
+            return True
+        return False
 
-    screen.blit(red_map, (0, 0))
-    screen.blit(blue_map, (width / 2 + 15, 0))
-    screen.blit(divider, (width / 2 - 15, 0))
+    def run(self):
+        bbb = balloon.Balloon()
+        ttt = tower.Tower(120, 320)
+        proj = []
+        towers = []
+        towers.append(ttt)
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
+                    coord = (x, y)
 
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-def update_fps():
-    fps = str(int(clock.get_fps()))
-    fps_text = font.render(fps, 1, pygame.Color("WHITE"))
-    return fps_text
-
-
-def calculate_distance_without_sqrt(point1, point2):
-    return (point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2  # for speed
-
-
-def euclidian_distance(point1, point2):
-    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
-
-
-def find_closest_point(middle_pixel_path, point):
-    path_pixels = np.asarray(middle_pixel_path)
-    x = path_pixels[spatial.KDTree(path_pixels).query(point)[1]]
-    return tuple(x)
-
-
-def can_place_tower(middle_pixel_path, point, path_radius, tower_radius):
-    # middle_pixel_path = filter_points(middle_pixel_path, point) Filter points to reduce number of points in calculations
-    closest_point = find_closest_point(middle_pixel_path, point)
-    true_distance = euclidian_distance(closest_point, point)
-    if true_distance > path_radius + tower_radius:
-        return True
-    return False
-
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            x, y = pygame.mouse.get_pos()
-            coord = (x, y)
-
-        if event.type == pygame.QUIT:
-            f.close()
-            pygame.quit()
-            sys.exit()
-
-    display_map(
-        screen, "images/maps/bloon_map_1.png", "images/utility/brick_divider.png"
-    )
+            self.display_map(
+                self.screen, "images/maps/bloon_map_1.png", "images/utility/brick_divider.png"
+            )
     
-    bbb.draw(screen)
+            bbb.draw(self.screen)
 
-    ttt.draw2(screen, bbb)
-    ttt.draw(screen)
-    screen.blit(update_fps(), (10, 0))
-    pygame.display.update()
-    clock.tick(60)
+            if ttt.in_range(bbb):
+                if ttt.can_shoot():
+                    pro = projectile.Projectile(ttt.getX(), ttt.getY())
+                    pro.projectile_target(bbb)
+                    proj.append(pro)
+                    ttt.is_reloading = True
+
+            for t in towers:
+                t.draw(self.screen)
+                t.reload()
+
+            for b in proj:
+                b.draw(self.screen)
+
+            self.screen.blit(self.update_fps(), (10, 0))
+            pygame.display.update()
+            self.clock.tick(60)
+
+if __name__ == '__main__':
+    game = Game()
+    game.load_path()
+    game.run()
+

@@ -15,12 +15,10 @@ class Tower:
         self.velocity = 2
         self.img = pygame.image.load("images/tower_images/tt.png")
         self.img = pygame.transform.scale(self.img, (60, 60))
-        self.bx = x
-        self.by = y
-        self.angle = None
+        self.reload_tick = [0, 20] # number of frames to wait before shooting again
+        self.is_reloading = False
 
-
-    def inRange(self, balloon):
+    def in_range(self, balloon):
         xDiff = balloon.getX() - self.x
         yDiff = balloon.getY() - self.y
         if xDiff ** 2 + yDiff ** 2 <= self.rangeR ** 2:
@@ -28,12 +26,28 @@ class Tower:
         else:
             return False
 
+    def is_tower_reloading(self):
+        return self.is_reloading
+
+    def reload(self):
+        if self.is_reloading:
+            self.reload_tick[0] += 1
+            if self.reload_tick[0] == self.reload_tick[1]:
+                self.reload_tick[0] = 0
+                self.is_reloading = False
+
+    def can_shoot(self):
+
+        if self.reload_tick[0] == 0:
+            return True
+        return False
+
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
     def shoot(self, bullet, balloon):
         # if splash = true, will be called in here as well
-        if self.inRange(balloon.getX(), balloon.getY()):
+        if self.in_range(balloon.getX(), balloon.getY()):
             bullet(balloon)
 
     def getX(self):
@@ -42,43 +56,11 @@ class Tower:
     def getY(self):
         return self.yCoord
 
-    def bulletTarget(self, balloon):
-        diffX = balloon.getX() - self.x
-        diffY = balloon.getY() - self.y
-        run = True
-        count = 0
-        while run:
-            count += 1
+    def getX(self):
+        return self.x
 
-            if (count * self.velocity) ** 2 >= diffX ** 2 + diffY ** 2:
-                run = False
-                diffX += balloon.getXVel()
-                diffY += balloon.getYVel()
-                return math.atan2(diffY, diffX)
-            diffX += balloon.getXVel()
-            diffY += balloon.getYVel()
-            if count >= 600:
-                run = False
-                return 0
-
-    def shoot_bullet(self, balloon, screen):
-        if self.inRange(balloon) and balloon.mark == False:
-            self.angle = self.bulletTarget(balloon)
-            balloon.mark = True
-
-    def move_bullet(self):
-        if self.angle != None:
-            self.bx += math.cos(self.angle) * self.velocity
-            self.by += math.sin(self.angle) * self.velocity
-
-    def draw2(self, screen, balloon):
-        if self.angle != None:
-            print(math.degrees(self.angle))
-        self.shoot_bullet(balloon, screen)
-        pygame.draw.circle(screen, "BLACK", (self.bx, self.by), 5)
-        self.move_bullet()
-
-
+    def getY(self):
+        return self.y
 
 
 
