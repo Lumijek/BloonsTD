@@ -67,7 +67,7 @@ class Game:
 
     def run(self):
         bbb = b.Balloon()
-        ccc = b.Balloon(k = True)
+        ccc = b.Balloon(k=True)
         ttt = t.Tower(120, 320)
         kkk = t.Tower(200, 320)
         proj = []

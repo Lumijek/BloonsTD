@@ -4,7 +4,7 @@ import pygame
 
 
 class Balloon:
-    def __init__(self, k = False):
+    def __init__(self, k=False):
         self.health = 1
         self.velocity = 1
         self.img = pygame.image.load("images/balloon_images/bb.png")
@@ -15,7 +15,7 @@ class Balloon:
         self.path_index = 0
         if k == True:
             self.x = self.path[1][0]
-            self.y = self.path[1][1]      
+            self.y = self.path[1][1]
             self.path_index = 1
         self.move_distance = 0
         self.current_angle = 0
@@ -57,9 +57,8 @@ class Balloon:
         if seg_dis_trav > tot_seg_dis:
             self.path_index += 1
             if self.path_index == len(self.path) - 1:
-                print('here')
+                print("here")
                 self.path_index = 0
-
 
     def get_x(self):
         return self.x

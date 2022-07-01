@@ -1,6 +1,7 @@
 import math
 import pygame
 
+
 class Tower:
     def __init__(self, x, y):
         self.length = None
@@ -19,7 +20,7 @@ class Tower:
     def in_range(self, balloon):
         xDiff = balloon.get_x() - self.x
         yDiff = balloon.get_y() - self.y
-        if xDiff ** 2 + yDiff ** 2 <= self.rangeR ** 2:
+        if xDiff**2 + yDiff**2 <= self.rangeR**2:
             return True
         else:
             return False
