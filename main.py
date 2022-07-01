@@ -67,21 +67,19 @@ class Game:
 
     def run(self):
         bbb = b.Balloon()
-        ccc = b.Balloon(k=True)
-        ttt = t.Tower(120, 320)
-        kkk = t.Tower(200, 320)
         proj = []
         towers = []
-        towers.append(ttt)
-        towers.append(kkk)
         balloons = []
         balloons.append(bbb)
-        balloons.append(ccc)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
-                    coord = (x, y)
+                    ts = t.Tower(x, y)
+                    if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
+                        towers.append(t.Tower(x, y))
+                    else:
+                        del ts
 
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -106,10 +104,16 @@ class Game:
                             proj.append(pr)
                             tower.is_reloading = True
                             break
+
                 tower.reload()
 
-            for pro in proj:
-                pro.draw(self.screen)
+            for i in range(len(proj)):
+                proj[i].draw(self.screen)
+                if proj[i].projectile_dead():
+                    proj[i] = 0
+
+            while 0 in proj:
+                proj.remove(0)
 
             self.screen.blit(self.update_fps(), (10, 0))
             pygame.display.update()
