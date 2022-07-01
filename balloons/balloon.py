@@ -4,7 +4,7 @@ import pygame
 
 
 class Balloon:
-    def __init__(self):
+    def __init__(self, k = False):
         self.health = 1
         self.velocity = 1
         self.img = pygame.image.load("images/balloon_images/bb.png")
@@ -13,8 +13,13 @@ class Balloon:
         self.x = self.path[0][0]
         self.y = self.path[0][1]
         self.path_index = 0
+        if k == True:
+            self.x = self.path[1][0]
+            self.y = self.path[1][1]      
+            self.path_index = 1
         self.move_distance = 0
-        self.currAngle = 0
+        self.current_angle = 0
+        self.damage = 1
 
     def load(self):
         path_coords = []
@@ -28,6 +33,7 @@ class Balloon:
         self.health -= health_change
 
     def draw(self, screen):
+        print(self.path_index)
         screen.blit(self.img, (self.x - 11, self.y - 11))
         self.move()
 
@@ -44,19 +50,25 @@ class Balloon:
 
         self.x += math.cos(angle) * self.velocity
         self.y += math.sin(angle) * self.velocity
-        self.currAngle = angle
+        self.current_angle = angle
 
-        if round(self.x) == x2 and round(self.y) == y2:
+        seg_dis_trav = math.sqrt((self.x - x1) ** 2 + (self.y - y1) ** 2)
+        tot_seg_dis = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        if seg_dis_trav > tot_seg_dis:
             self.path_index += 1
+            if self.path_index == len(self.path) - 1:
+                print('here')
+                self.path_index = 0
 
-    def getX(self):
+
+    def get_x(self):
         return self.x
 
-    def getY(self):
+    def get_y(self):
         return self.y
 
-    def getXVel(self):
-        return math.cos(self.currAngle) * self.velocity
+    def get_x_velocity(self):
+        return math.cos(self.current_angle) * self.velocity
 
-    def getYVel(self):
-        return math.sin(self.currAngle) * self.velocity
+    def get_y_velocity(self):
+        return math.sin(self.current_angle) * self.velocity

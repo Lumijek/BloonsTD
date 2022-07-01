@@ -11,7 +11,7 @@ class Player:
         self.money += money_change
 
     def change_health(self, health_change):
-        self.health += health_change
+        self.health -= health_change
 
     def get_eco(self):
         return self.eco

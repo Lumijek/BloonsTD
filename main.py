@@ -1,11 +1,10 @@
 import ast
-import math
 import pygame
 import sys
 
 from utility import *
-from balloons import balloon
-from towers import tower
+from balloons import balloon as b
+from towers import tower as t
 from projectiles import projectile
 
 pygame.init()
@@ -67,11 +66,17 @@ class Game:
         return False
 
     def run(self):
-        bbb = balloon.Balloon()
-        ttt = tower.Tower(120, 320)
+        bbb = b.Balloon()
+        ccc = b.Balloon(k = True)
+        ttt = t.Tower(120, 320)
+        kkk = t.Tower(200, 320)
         proj = []
         towers = []
         towers.append(ttt)
+        towers.append(kkk)
+        balloons = []
+        balloons.append(bbb)
+        balloons.append(ccc)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -88,21 +93,23 @@ class Game:
                 "images/utility/brick_divider.png",
             )
 
-            bbb.draw(self.screen)
+            for balloon in balloons:
+                balloon.draw(self.screen)
 
-            if ttt.in_range(bbb):
-                if ttt.can_shoot():
-                    pro = projectile.Projectile(ttt.getX(), ttt.getY())
-                    pro.projectile_target(bbb)
-                    proj.append(pro)
-                    ttt.is_reloading = True
+            for tower in towers:
+                tower.draw(self.screen)
+                for balloon in balloons:
+                    if tower.in_range(balloon):
+                        if tower.can_shoot():
+                            pr = projectile.Projectile(tower.get_x(), tower.get_y())
+                            pr.projectile_target(balloon)
+                            proj.append(pr)
+                            tower.is_reloading = True
+                            break
+                tower.reload()
 
-            for t in towers:
-                t.draw(self.screen)
-                t.reload()
-
-            for b in proj:
-                b.draw(self.screen)
+            for pro in proj:
+                pro.draw(self.screen)
 
             self.screen.blit(self.update_fps(), (10, 0))
             pygame.display.update()

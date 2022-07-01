@@ -1,16 +1,13 @@
 import math
 import pygame
 
-from sqlalchemy import false
-
-
 class Tower:
     def __init__(self, x, y):
         self.length = None
         self.height = None
         self.x = x
         self.y = y
-        self.rangeR = 100
+        self.rangeR = 500
         self.price = None
         self.damage = None
         self.velocity = 2
@@ -20,9 +17,9 @@ class Tower:
         self.is_reloading = False
 
     def in_range(self, balloon):
-        xDiff = balloon.getX() - self.x
-        yDiff = balloon.getY() - self.y
-        if xDiff**2 + yDiff**2 <= self.rangeR**2:
+        xDiff = balloon.get_x() - self.x
+        yDiff = balloon.get_y() - self.y
+        if xDiff ** 2 + yDiff ** 2 <= self.rangeR ** 2:
             return True
         else:
             return False
@@ -46,19 +43,8 @@ class Tower:
     def draw(self, screen):
         screen.blit(self.img, (self.x, self.y))
 
-    def shoot(self, bullet, balloon):
-        # if splash = true, will be called in here as well
-        if self.in_range(balloon.getX(), balloon.getY()):
-            bullet(balloon)
-
-    def getX(self):
-        return self.xCoord
-
-    def getY(self):
-        return self.yCoord
-
-    def getX(self):
+    def get_x(self):
         return self.x
 
-    def getY(self):
+    def get_y(self):
         return self.y
