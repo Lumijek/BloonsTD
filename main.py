@@ -100,7 +100,7 @@ class Game:
                     if tower.in_range(balloon):
                         if tower.can_shoot():
                             pr = projectile.Projectile(tower.get_x(), tower.get_y())
-                            pr.projectile_target(balloon)
+                            pr.projectile_target(balloon, balloon.path, balloon.path_index)
                             proj.append(pr)
                             tower.is_reloading = True
                             break

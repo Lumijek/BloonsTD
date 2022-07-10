@@ -4,9 +4,9 @@ import pygame
 
 
 class Balloon:
-    def __init__(self, k=False):
+    def __init__(self):
         self.health = 1
-        self.velocity = 3
+        self.velocity = 1
         self.img = pygame.image.load("images/balloon_images/bb.png")
         self.path = []
         self.load()
@@ -67,3 +67,6 @@ class Balloon:
 
     def get_y_velocity(self):
         return math.sin(self.current_angle) * self.velocity
+
+    def get_velocity(self):
+        return self.velocity
