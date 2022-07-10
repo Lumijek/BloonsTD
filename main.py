@@ -67,7 +67,7 @@ class Game:
 
     def run(self):
         bbb = b.Balloon()
-        proj = []
+        proj = [] #projectiles
         towers = []
         balloons = []
         balloons.append(bbb)
@@ -100,7 +100,8 @@ class Game:
                     if tower.in_range(balloon):
                         if tower.can_shoot():
                             pr = projectile.Projectile(tower.get_x(), tower.get_y())
-                            pr.projectile_target(balloon)
+                            path, path_index = balloon.get_path_details()
+                            pr.projectile_target(balloon, path, path_index)
                             proj.append(pr)
                             tower.is_reloading = True
                             break

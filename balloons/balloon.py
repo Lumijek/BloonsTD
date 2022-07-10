@@ -70,3 +70,6 @@ class Balloon:
 
     def get_velocity(self):
         return self.velocity
+
+    def get_path_details(self):
+        return self.path, self.path_index

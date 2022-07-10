@@ -13,7 +13,9 @@ class Projectile:
         self.tot_dis = 300
         self.dis_traveled = 0
 
-    def projectile_target(self, balloon):
+    def projectile_target(self, balloon, path, path_index):
+        print(path[path_index], path[path_index+1])
+
         diffX = balloon.get_x() - self.x
         diffY = balloon.get_y() - self.y
         run = True
