@@ -19,7 +19,7 @@ class Tower:
     def in_range(self, balloon):
         x_change = balloon.get_x() - self.x
         y_change = balloon.get_y() - self.y
-        if x_change ** 2 + y_change ** 2 <= self.range ** 2:
+        if x_change**2 + y_change**2 <= self.range**2:
             return True
         else:
             return False
@@ -54,4 +54,3 @@ class Tower:
 
     def get_width(self):
         return self.width
-
