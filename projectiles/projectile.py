@@ -28,7 +28,10 @@ class Projectile:
                 run = False
                 diffX += balloon.get_x_velocity()
                 diffY += balloon.get_y_velocity()
-                self.angle = math.atan2(diffY, diffX)
+                if self.inCheck( path[path_index][0], path[path_index][1], path[path_index+1][0],path[path_index+1][1], diffX,diffY ):
+                    self.angle = math.atan2(diffY, diffX)
+                else:
+                    pass
 
             diffX += balloon.get_x_velocity()
             diffY += balloon.get_y_velocity()
@@ -55,3 +58,11 @@ class Projectile:
         if self.dis_traveled >= self.tot_dis:
             return True
         return False
+
+    def inCheck(self,x1,y1,x2,y2,x,y):
+        if x>=max(x1,x2) or x<=min(x1,x2):
+            return False
+        elif y>=max(y1,y2) or y<=(y1,y2):
+            return False
+        else: 
+            return True
