@@ -15,9 +15,10 @@ class Projectile:
 
     def projectile_target(self, balloon, path, path_index):
         print(path[path_index], path[path_index+1])
-
-        diffX = balloon.get_x() - self.x
-        diffY = balloon.get_y() - self.y
+        rangeBX = balloon.get_x()
+        rangeBY = balloon.get_y() 
+        diffX = rangeBX - self.x
+        diffY = rangeBY - self.y
         run = True
         count = 0
         while run:
@@ -28,7 +29,11 @@ class Projectile:
                 run = False
                 diffX += balloon.get_x_velocity()
                 diffY += balloon.get_y_velocity()
-                if self.inCheck( path[path_index][0], path[path_index][1], path[path_index+1][0],path[path_index+1][1], diffX,diffY ):
+                #print(f"X:{diffX} Y:{diffY}")
+                tempX = rangeBX+balloon.get_x_velocity()*(count)
+                tempY = rangeBY+balloon.get_y_velocity()*(count)
+                #print(f"teX:{tempX} teY:{tempY}")
+                if self.inCheck( path[path_index][0], path[path_index][1], path[path_index+1][0],path[path_index+1][1], tempX,tempY):
                     self.angle = math.atan2(diffY, diffX)
                 else:
                     pass
@@ -60,9 +65,13 @@ class Projectile:
         return False
 
     def inCheck(self,x1,y1,x2,y2,x,y):
-        if x>=max(x1,x2) or x<=min(x1,x2):
+        if x>max(x1,x2) or x<min(x1,x2):
+            print("failsX")
+            print(x1,x2,x)
             return False
-        elif y>=max(y1,y2) or y<=(y1,y2):
+        elif y>max(y1,y2) or y<min(y1,y2):
+            print("failsY")
+            print(y1,y2,y)
             return False
         else: 
             return True
