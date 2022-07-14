@@ -2,7 +2,7 @@ import player
 import time
 
 
-class gameManager:
+class GameManager:
     def __init__(self):
         self.player_1 = player.Player(200, 500, 250)
         self.player_2 = player.Player(200, 500, 250)
@@ -11,7 +11,7 @@ class gameManager:
 
     def start_round(self):
         self.initial_time = time.perf_counter()
-        self.round = 1
+        self.round = 12
 
     def update_time(self):
         self.game_timer = round(time.perf_counter() - self.initial_time)
@@ -30,3 +30,6 @@ class gameManager:
 
     def change_round(self):
         self.round += 1
+
+    def get_round(self):
+        return self.round
