@@ -1,11 +1,12 @@
 import ast
 import pygame
 import sys
-
+from numpy import random
 from utility import *
 from balloons import balloon as b
 from towers import tower as t
 from projectiles import projectile
+from balloons import redBalloon as rb,blueBalloon as bb
 
 pygame.init()
 
@@ -64,14 +65,24 @@ class Game:
         if true_distance > path_radius + tower_radius:
             return True
         return False
+    #temporary Method 
+    def randomBalloon(self):
+        r = random.randint(1)
+        print(r)
+        if r >0:
+            return rb.RedBalloon()
+        else:
+            return bb.BlueBalloon()
 
     def run(self):
-        bbb = b.Balloon()
+        
         proj = [] #projectiles
         towers = []
         balloons = []
+        bbb = self.randomBalloon()
         balloons.append(bbb)
         while True:
+            
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()

@@ -7,7 +7,7 @@ class Balloon:
     def __init__(self):
         self.health = 1
         self.velocity = 1
-        self.img = pygame.image.load("images/balloon_images/bb.png")
+        self.img = None
         self.path = []
         self.load()
         self.x = self.path[0][0]
