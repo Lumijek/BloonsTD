@@ -14,7 +14,10 @@ pygame.init()
 
 WIDTH = 1000
 HEIGHT = 600
-ROUND_COLOR = (242, 187, 65)
+ROUND_COLOR = (207, 163, 21)
+TIME_COLOR = (155, 183, 199)
+MONEY_COLOR = (220, 220, 220)
+ECO_COLOR = (30, 220, 0)
 
 class Game:
     def __init__(self):
@@ -46,11 +49,12 @@ class Game:
 
         return current_map
 
-    def display_map(self, screen, map_name, divider, round_displayer):
+    def display_map(self, screen, map_name, divider, round_displayer, game_info_bg):
         red_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
         blue_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
         divider = pygame.image.load(divider)
         round_display = pygame.image.load(round_displayer)
+        game_info_bg = pygame.image.load(game_info_bg)
 
         blue_map = pygame.transform.flip(blue_map, True, False)
         divider = pygame.transform.scale(divider, (30, HEIGHT))
@@ -60,6 +64,7 @@ class Game:
         self.screen.blit(blue_map, (WIDTH / 2 + 15, 0))
         self.screen.blit(divider, (WIDTH / 2 - 15, 0))
         self.screen.blit(round_display, (WIDTH / 2 - round_display.get_width() / 2, 0))
+        self.screen.blit(game_info_bg, (WIDTH / 2 - game_info_bg.get_width() / 2, HEIGHT - game_info_bg.get_height()))
 
     def update_fps(self):
         fps = str(int(self.clock.get_fps()))
@@ -103,7 +108,15 @@ class Game:
         round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
         self.screen.blit(round_text, (WIDTH / 2 - round_text.get_width() / 2, 0))
         round_number_text = self.render_text(str(self.game_state.get_round()), self.text_font, ROUND_COLOR, "BLACK", 2)
-        self.screen.blit(round_number_text, ((WIDTH / 2) - round_number_text.get_width() / 2, 0 + round_text.get_height() - 5))
+        self.screen.blit(round_number_text, ((WIDTH / 2) - round_number_text.get_width() / 2, round_text.get_height() - 5))
+        time_text = self.render_text(str(self.game_state.get_time()), self.text_font, TIME_COLOR, "BLACK", 2)
+        self.screen.blit(time_text, ((WIDTH / 2) - 15, HEIGHT * (4 / 5)))
+        money_text = self.render_text(str(self.game_state.get_money()), self.text_font, MONEY_COLOR, "BLACK", 2)
+        self.screen.blit(money_text, ((WIDTH / 2) - 15, HEIGHT * (6 / 7) - 5))
+        eco_text = self.render_text(str(self.game_state.get_eco()), self.text_font, ECO_COLOR, "BLACK", 2)
+        self.screen.blit(eco_text, ((WIDTH / 2) - 15, HEIGHT * (9 / 10)))
+        quit_text = self.render_text("Quit?", self.text_font, TIME_COLOR, "BLACK", 2)
+        self.screen.blit(quit_text, ((WIDTH / 2) - 15, HEIGHT - quit_text.get_height() - 5))
 
     def run(self):
         
@@ -133,7 +146,8 @@ class Game:
                 self.screen,
                 "images/maps/bloon_map_1.png",
                 "images/utility/brick_divider.png",
-                "images/utility/round_background.png"
+                "images/utility/round_background.png",
+                "images/utility/game_info_bg.png"
             )
 
             for balloon in balloons:
