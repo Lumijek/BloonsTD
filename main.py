@@ -1,6 +1,7 @@
 import ast
 import pygame
 import sys
+import time
 from numpy import random
 from utility import *
 from utility import _circlepoints
@@ -146,7 +147,7 @@ class Game:
         if r > 0:
             return rb.RedBalloon()
         else:
-            return bb.BlueBalloon()
+            return rb.RedBalloon()
 
     def display_game_information(self):
         round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
@@ -190,7 +191,11 @@ class Game:
         bbb = self.randomBalloon()
         balloons.append(bbb)
         self.game_state.start_round()
+        previous_time = time.perf_counter()
+        
         while True:
+            delta_time = time.perf_counter() - previous_time
+            previous_time = time.perf_counter() 
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -211,7 +216,7 @@ class Game:
             self.display_map()
 
             for balloon in balloons:
-                balloon.draw(self.screen)
+                balloon.draw(self.screen, delta_time)
 
             for tower in towers:
                 tower.draw(self.screen)
@@ -220,7 +225,7 @@ class Game:
                         if tower.can_shoot():
                             pr = projectile.Projectile(tower.get_x(), tower.get_y())
                             path, path_index = balloon.get_path_details()
-                            pr.projectile_target(balloon, path, path_index)
+                            pr.projectile_target(balloon, path, path_index, delta_time)
                             proj.append(pr)
                             tower.is_reloading = True
                             break
@@ -228,7 +233,7 @@ class Game:
                 tower.reload()
 
             for i in range(len(proj)):
-                proj[i].draw(self.screen)
+                proj[i].draw(self.screen, delta_time)
                 if proj[i].projectile_dead():
                     proj[i] = 0
 

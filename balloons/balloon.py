@@ -6,7 +6,7 @@ import pygame
 class Balloon:
     def __init__(self):
         self.health = 1
-        self.velocity = 1
+        self.velocity = 100
         self.img = None
         self.path = []
         self.load()
@@ -29,14 +29,14 @@ class Balloon:
     def decrease_health(self, health_change):
         self.health -= health_change
 
-    def draw(self, screen):
+    def draw(self, screen, delta_time):
         screen.blit(self.img, (self.x - 11, self.y - 11))
-        self.move()
+        self.move(delta_time)
 
     def show_path(self):
         return self.path
 
-    def move(self):
+    def move(self, delta_time):
         x1, y1 = self.path[self.path_index]
         x2, y2 = self.path[self.path_index + 1]
 
@@ -44,8 +44,8 @@ class Balloon:
         changey = y2 - y1
         angle = math.atan2(changey, changex)
 
-        self.x += math.cos(angle) * self.velocity
-        self.y += math.sin(angle) * self.velocity
+        self.x += math.cos(angle) * self.velocity * delta_time
+        self.y += math.sin(angle) * self.velocity * delta_time
         self.current_angle = angle
 
         seg_dis_trav = math.sqrt((self.x - x1) ** 2 + (self.y - y1) ** 2)

@@ -7,13 +7,13 @@ class Projectile:
     def __init__(self, starting_x, starting_y):
         self.x = starting_x
         self.y = starting_y
-        self.velocity = 2
+        self.velocity = 500
         self.img = None
         self.angle = None
         self.tot_dis = 300
         self.dis_traveled = 0
 
-    def projectile_target(self, balloon, path, path_index):
+    def projectile_target(self, balloon, path, path_index, delta_time):
         rangeBX = balloon.get_x()
         rangeBY = balloon.get_y()
         diffX = rangeBX - self.x
@@ -24,12 +24,12 @@ class Projectile:
 
             count += 1
 
-            if (count * self.velocity) ** 2 >= diffX**2 + diffY**2:
+            if (count * self.velocity * delta_time) ** 2 >= diffX**2 + diffY**2:
                 run = False
-                diffX += balloon.get_x_velocity()
-                diffY += balloon.get_y_velocity()
-                tempX = rangeBX + balloon.get_x_velocity() * (count)
-                tempY = rangeBY + balloon.get_y_velocity() * (count)
+                diffX += balloon.get_x_velocity() * delta_time
+                diffY += balloon.get_y_velocity() * delta_time
+                tempX = rangeBX + balloon.get_x_velocity() * (count) * delta_time
+                tempY = rangeBY + balloon.get_y_velocity() * (count) * delta_time
                 if self.inCheck(
                     path[path_index][0],
                     path[path_index][1],
@@ -42,8 +42,8 @@ class Projectile:
                 else:
                     pass
 
-            diffX += balloon.get_x_velocity()
-            diffY += balloon.get_y_velocity()
+            diffX += balloon.get_x_velocity() * delta_time
+            diffY += balloon.get_y_velocity() * delta_time
             if count >= 600:
                 run = False
                 self.angle = 0
@@ -53,15 +53,15 @@ class Projectile:
             (balloon.get_x() - self.x) ** 2 + (balloon.get_y() - self.y) ** 2
         )
 
-    def move_projectile(self):
+    def move_projectile(self, delta_time):
         if self.angle != None:
-            self.x += math.cos(self.angle) * self.velocity
-            self.y += math.sin(self.angle) * self.velocity
-            self.dis_traveled += self.velocity
+            self.x += math.cos(self.angle) * self.velocity * delta_time
+            self.y += math.sin(self.angle) * self.velocity * delta_time
+            self.dis_traveled += self.velocity * delta_time
 
-    def draw(self, screen):
+    def draw(self, screen, delta_time):
         pygame.draw.circle(screen, "BLACK", (self.x, self.y), 5)
-        self.move_projectile()
+        self.move_projectile(delta_time)
 
     def projectile_dead(self):
         if self.dis_traveled >= self.tot_dis:
