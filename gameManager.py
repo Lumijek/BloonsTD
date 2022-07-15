@@ -11,7 +11,7 @@ class GameManager:
 
     def start_round(self):
         self.initial_time = time.perf_counter()
-        self.round = 12
+        self.round = 1
 
     def update_time(self):
         self.game_timer = round(time.perf_counter() - self.initial_time)

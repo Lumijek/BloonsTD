@@ -3,6 +3,7 @@ import pygame
 import sys
 from numpy import random
 from utility import *
+from utility import _circlepoints
 from balloons import balloon as b
 from towers import tower as t
 from projectiles import projectile
@@ -72,6 +73,25 @@ class Game:
             return True
         return False
 
+    #Method from https://stackoverflow.com/questions/54363047/how-to-draw-outline-on-the-fontpygame
+    def render_text(self, text, font, text_color, outline_color, outline_width):
+        text_surface = font.render(text, 1, text_color).convert_alpha()
+        width = text_surface.get_width() + 2 * outline_width
+        height = font.get_height()
+
+        outline_surface = pygame.Surface((width, height + 2 * outline_width)).convert_alpha()
+        outline_surface.fill((0, 0, 0, 0))
+
+        surf = outline_surface.copy()
+
+        outline_surface.blit(font.render(text, 1, outline_color).convert_alpha(), (0, 0))
+
+        for dx, dy in _circlepoints(outline_width):
+            surf.blit(outline_surface, (dx + outline_width, dy + outline_width))
+
+        surf.blit(text_surface, (outline_width, outline_width))
+        return surf
+
     def randomBalloon(self):
         r = random.uniform(-1, 1)
         if r >0:
@@ -80,10 +100,10 @@ class Game:
             return bb.BlueBalloon()
 
     def display_game_information(self):
-        round_text = self.text_font.render("Round", 1, ROUND_COLOR)
+        round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
         self.screen.blit(round_text, (WIDTH / 2 - round_text.get_width() / 2, 0))
-        round_number_text = self.text_font.render(str(self.game_state.get_round()), 1, ROUND_COLOR)
-        self.screen.blit(round_number_text, ((WIDTH / 2) - round_number_text.get_width() / 2, 0 + round_text.get_height()))
+        round_number_text = self.render_text(str(self.game_state.get_round()), self.text_font, ROUND_COLOR, "BLACK", 2)
+        self.screen.blit(round_number_text, ((WIDTH / 2) - round_number_text.get_width() / 2, 0 + round_text.get_height() - 5))
 
     def run(self):
         
@@ -97,6 +117,7 @@ class Game:
             
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.game_state.change_round()
                     x, y = pygame.mouse.get_pos()
                     ts = t.Tower(x, y)
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
