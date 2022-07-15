@@ -15,7 +15,7 @@ class Projectile:
 
     def projectile_target(self, balloon, path, path_index):
         rangeBX = balloon.get_x()
-        rangeBY = balloon.get_y() 
+        rangeBY = balloon.get_y()
         diffX = rangeBX - self.x
         diffY = rangeBY - self.y
         run = True
@@ -28,9 +28,16 @@ class Projectile:
                 run = False
                 diffX += balloon.get_x_velocity()
                 diffY += balloon.get_y_velocity()
-                tempX = rangeBX+balloon.get_x_velocity()*(count)
-                tempY = rangeBY+balloon.get_y_velocity()*(count)
-                if self.inCheck( path[path_index][0], path[path_index][1], path[path_index+1][0],path[path_index+1][1], tempX,tempY):
+                tempX = rangeBX + balloon.get_x_velocity() * (count)
+                tempY = rangeBY + balloon.get_y_velocity() * (count)
+                if self.inCheck(
+                    path[path_index][0],
+                    path[path_index][1],
+                    path[path_index + 1][0],
+                    path[path_index + 1][1],
+                    tempX,
+                    tempY,
+                ):
                     self.angle = math.atan2(diffY, diffX)
                 else:
                     pass
@@ -61,10 +68,10 @@ class Projectile:
             return True
         return False
 
-    def inCheck(self,x1,y1,x2,y2,x,y):
-        if x>max(x1,x2) or x<min(x1,x2):
+    def inCheck(self, x1, y1, x2, y2, x, y):
+        if x > max(x1, x2) or x < min(x1, x2):
             return False
-        elif y>max(y1,y2) or y<min(y1,y2):
+        elif y > max(y1, y2) or y < min(y1, y2):
             return False
-        else: 
+        else:
             return True

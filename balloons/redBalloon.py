@@ -1,5 +1,7 @@
-from balloons.balloon import Balloon 
+from balloons.balloon import Balloon
 import pygame
+
+
 class RedBalloon(Balloon):
     def __init__(self):
         super().__init__()

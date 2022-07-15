@@ -15,8 +15,12 @@ def find_closest_point(middle_pixel_path, point):
     path_pixels = np.asarray(middle_pixel_path)
     x = path_pixels[spatial.KDTree(path_pixels).query(point)[1]]
     return tuple(x)
+
+
 # Copied from the ptext library
 _circle_cache = {}
+
+
 def _circlepoints(r):
     r = int(round(r))
     if r in _circle_cache:

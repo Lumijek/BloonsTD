@@ -18,6 +18,8 @@ ROUND_COLOR = (207, 163, 21)
 TIME_COLOR = (155, 183, 199)
 MONEY_COLOR = (220, 220, 220)
 ECO_COLOR = (30, 220, 0)
+HEALTH_COLOR = (165, 227, 75)
+
 
 class Game:
     def __init__(self):
@@ -27,6 +29,7 @@ class Game:
         self.text_font = pygame.font.Font("assets/oetztype.ttf", 18, bold=True)
         self.path = []
         self.load_path()
+        self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
 
@@ -41,6 +44,29 @@ class Game:
             coord = ast.literal_eval(coordinate)
             self.path.append(coord)
 
+    def load_images(self):
+        self.red_map = self.load_map(
+            "images/maps/bloon_map_1.png", WIDTH / 2 - 15, HEIGHT
+        )
+        self.blue_map = self.load_map(
+            "images/maps/bloon_map_1.png", WIDTH / 2 - 15, HEIGHT
+        )
+        self.divider = pygame.image.load("images/utility/brick_divider.png")
+        self.round_display = pygame.image.load("images/utility/round_background.png")
+        self.game_info_bg = pygame.image.load("images/utility/game_info_bg.png")
+        self.red_health_bar = pygame.image.load("images/utility/red_health_bar.png")
+        self.green_health_bar = pygame.image.load(
+            "images/utility/green_health_bar.png"
+        ).convert_alpha()
+        self.blue_map = pygame.transform.flip(self.blue_map, True, False)
+        self.divider = pygame.transform.scale(self.divider, (30, HEIGHT))
+        self.red_health_bar = pygame.transform.scale(
+            self.red_health_bar, (WIDTH / 2, HEIGHT / 20)
+        )
+        self.green_health_bar = pygame.transform.scale(
+            self.green_health_bar, (WIDTH * (15 / 32), HEIGHT / 24)
+        )
+
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
@@ -49,27 +75,34 @@ class Game:
 
         return current_map
 
-    def display_map(self, screen, map_name, divider, round_displayer, game_info_bg):
-        red_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
-        blue_map = self.load_map(map_name, WIDTH / 2 - 15, HEIGHT)
-        divider = pygame.image.load(divider)
-        round_display = pygame.image.load(round_displayer)
-        game_info_bg = pygame.image.load(game_info_bg)
+    def display_map(self):
+        self.screen.blit(self.red_map, (0, 0))
+        self.screen.blit(self.blue_map, (WIDTH / 2 + 15, 0))
+        self.screen.blit(self.divider, (WIDTH / 2 - 15, 0))
 
-        blue_map = pygame.transform.flip(blue_map, True, False)
-        divider = pygame.transform.scale(divider, (30, HEIGHT))
-
-
-        self.screen.blit(red_map, (0, 0))
-        self.screen.blit(blue_map, (WIDTH / 2 + 15, 0))
-        self.screen.blit(divider, (WIDTH / 2 - 15, 0))
-        self.screen.blit(round_display, (WIDTH / 2 - round_display.get_width() / 2, 0))
-        self.screen.blit(game_info_bg, (WIDTH / 2 - game_info_bg.get_width() / 2, HEIGHT - game_info_bg.get_height()))
+    def display_images(self, health_ratio):
+        self.screen.blit(self.red_health_bar, (0, 0))
+        self.green_health_bar = pygame.transform.scale(
+            self.green_health_bar, (WIDTH * (15 / 32) * health_ratio, HEIGHT / 24)
+        )
+        self.screen.blit(self.green_health_bar, (0, 3))
+        self.screen.blit(
+            self.round_display, (WIDTH / 2 - self.round_display.get_width() / 2, 0)
+        )
+        self.screen.blit(
+            self.game_info_bg,
+            (
+                WIDTH / 2 - self.game_info_bg.get_width() / 2,
+                HEIGHT - self.game_info_bg.get_height(),
+            ),
+        )
+        self.game_state.change_alpha()
+        self.green_health_bar.set_alpha(self.game_state.get_alpha())
 
     def update_fps(self):
         fps = str(int(self.clock.get_fps()))
         fps_text = self.fps_font.render(fps, 1, pygame.Color("WHITE"))
-        self.screen.blit(fps_text, (10, 0))
+        self.screen.blit(fps_text, (10, 6))
 
     def can_place_tower(self, middle_pixel_path, point, path_radius, tower_radius):
         closest_point = find_closest_point(middle_pixel_path, point)
@@ -78,18 +111,22 @@ class Game:
             return True
         return False
 
-    #Method from https://stackoverflow.com/questions/54363047/how-to-draw-outline-on-the-fontpygame
+    # Method from https://stackoverflow.com/questions/54363047/how-to-draw-outline-on-the-fontpygame
     def render_text(self, text, font, text_color, outline_color, outline_width):
         text_surface = font.render(text, 1, text_color).convert_alpha()
         width = text_surface.get_width() + 2 * outline_width
         height = font.get_height()
 
-        outline_surface = pygame.Surface((width, height + 2 * outline_width)).convert_alpha()
+        outline_surface = pygame.Surface(
+            (width, height + 2 * outline_width)
+        ).convert_alpha()
         outline_surface.fill((0, 0, 0, 0))
 
         surf = outline_surface.copy()
 
-        outline_surface.blit(font.render(text, 1, outline_color).convert_alpha(), (0, 0))
+        outline_surface.blit(
+            font.render(text, 1, outline_color).convert_alpha(), (0, 0)
+        )
 
         for dx, dy in _circlepoints(outline_width):
             surf.blit(outline_surface, (dx + outline_width, dy + outline_width))
@@ -99,7 +136,7 @@ class Game:
 
     def randomBalloon(self):
         r = random.uniform(-1, 1)
-        if r >0:
+        if r > 0:
             return rb.RedBalloon()
         else:
             return bb.BlueBalloon()
@@ -107,30 +144,53 @@ class Game:
     def display_game_information(self):
         round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
         self.screen.blit(round_text, (WIDTH / 2 - round_text.get_width() / 2, 0))
-        round_number_text = self.render_text(str(self.game_state.get_round()), self.text_font, ROUND_COLOR, "BLACK", 2)
-        self.screen.blit(round_number_text, ((WIDTH / 2) - round_number_text.get_width() / 2, round_text.get_height() - 5))
-        time_text = self.render_text(str(self.game_state.get_time()), self.text_font, TIME_COLOR, "BLACK", 2)
+        round_number_text = self.render_text(
+            str(self.game_state.get_round()), self.text_font, ROUND_COLOR, "BLACK", 2
+        )
+        self.screen.blit(
+            round_number_text,
+            (
+                (WIDTH / 2) - round_number_text.get_width() / 2,
+                round_text.get_height() - 5,
+            ),
+        )
+        time_text = self.render_text(
+            str(self.game_state.get_time()), self.text_font, TIME_COLOR, "BLACK", 2
+        )
         self.screen.blit(time_text, ((WIDTH / 2) - 15, HEIGHT * (4 / 5)))
-        money_text = self.render_text(str(self.game_state.get_money()), self.text_font, MONEY_COLOR, "BLACK", 2)
+        money_text = self.render_text(
+            str(self.game_state.get_money()), self.text_font, MONEY_COLOR, "BLACK", 2
+        )
         self.screen.blit(money_text, ((WIDTH / 2) - 15, HEIGHT * (6 / 7) - 5))
-        eco_text = self.render_text(str(self.game_state.get_eco()), self.text_font, ECO_COLOR, "BLACK", 2)
+        eco_text = self.render_text(
+            str(self.game_state.get_eco()), self.text_font, ECO_COLOR, "BLACK", 2
+        )
         self.screen.blit(eco_text, ((WIDTH / 2) - 15, HEIGHT * (9 / 10)))
         quit_text = self.render_text("Quit?", self.text_font, TIME_COLOR, "BLACK", 2)
-        self.screen.blit(quit_text, ((WIDTH / 2) - 15, HEIGHT - quit_text.get_height() - 5))
+        self.screen.blit(
+            quit_text, ((WIDTH / 2) - 15, HEIGHT - quit_text.get_height() - 5)
+        )
+        health_text = self.render_text(
+            str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
+        )
+        self.screen.blit(health_text, (10, 3))
 
     def run(self):
-        
-        proj = [] #projectiles
+
+        proj = []  # projectiles
         towers = []
         balloons = []
         bbb = self.randomBalloon()
         balloons.append(bbb)
         self.game_state.start_round()
+
         while True:
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.game_state.change_round()
+
+                    self.game_state.change_round()  # testing purposes
+                    self.game_state.change_health(1)  # testing purposes
                     x, y = pygame.mouse.get_pos()
                     ts = t.Tower(x, y)
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
@@ -142,13 +202,7 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.display_map(
-                self.screen,
-                "images/maps/bloon_map_1.png",
-                "images/utility/brick_divider.png",
-                "images/utility/round_background.png",
-                "images/utility/game_info_bg.png"
-            )
+            self.display_map()
 
             for balloon in balloons:
                 balloon.draw(self.screen)
@@ -175,8 +229,9 @@ class Game:
             while 0 in proj:
                 proj.remove(0)
 
+            self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
-            self.update_fps()
+            # self.update_fps()
             pygame.display.update()
             self.clock.tick(60)
 

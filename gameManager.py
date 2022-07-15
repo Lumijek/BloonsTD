@@ -12,15 +12,18 @@ class GameManager:
         self.eco_timer = 0
         self.eco_time = 6
         self.last_time_multiple_of_eco_time = None
+        self.alpha_count = 0
 
     def start_round(self):
         self.initial_time = time.perf_counter()
         self.round = 1
 
-
     def update_time(self):
         self.game_timer = round(time.perf_counter() - self.initial_time - 0.5)
-        if self.game_timer % self.eco_time == 0 and self.game_timer != self.last_time_multiple_of_eco_time:
+        if (
+            self.game_timer % self.eco_time == 0
+            and self.game_timer != self.last_time_multiple_of_eco_time
+        ):
             self.player_1.change_money(self.player_1.get_eco())
             self.last_time_multiple_of_eco_time = self.game_timer
 
@@ -49,3 +52,20 @@ class GameManager:
 
     def get_eco(self):
         return f"${str(self.player_1.get_eco())}"
+
+    def get_health(self):
+        return str(self.player_1.get_health())
+
+    def get_player_health_ratio(self):
+        return self.player_1.get_health_ratio()
+
+    def change_health(self, change):
+        self.player_1.change_health(change)
+        self.alpha_count = 5
+
+    def change_alpha(self):
+        if self.alpha_count != 0:
+            self.alpha_count -= 1
+
+    def get_alpha(self):
+        return 255 - (47 * self.alpha_count)
