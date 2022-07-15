@@ -11,7 +11,7 @@ class GameManager:
         self.round = 0
         self.eco_timer = 0
         self.eco_time = 6
-        self.last_time_multiple_of_six = None
+        self.last_time_multiple_of_eco_time = None
 
     def start_round(self):
         self.initial_time = time.perf_counter()
@@ -20,9 +20,9 @@ class GameManager:
 
     def update_time(self):
         self.game_timer = round(time.perf_counter() - self.initial_time - 0.5)
-        if self.game_timer % 6 == 0 and self.game_timer != self.last_time_multiple_of_six:
+        if self.game_timer % self.eco_time == 0 and self.game_timer != self.last_time_multiple_of_eco_time:
             self.player_1.change_money(self.player_1.get_eco())
-            self.last_time_multiple_of_six = self.game_timer
+            self.last_time_multiple_of_eco_time = self.game_timer
 
     def get_time_elapsed(self):
         return self.game_timer
