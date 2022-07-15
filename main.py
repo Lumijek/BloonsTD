@@ -12,8 +12,8 @@ import gameManager
 
 pygame.init()
 
-WIDTH = 1000
-HEIGHT = 600
+WIDTH = 1280
+HEIGHT = 800
 ROUND_COLOR = (207, 163, 21)
 TIME_COLOR = (155, 183, 199)
 MONEY_COLOR = (220, 220, 220)
@@ -52,7 +52,7 @@ class Game:
             "images/maps/bloon_map_1.png", WIDTH / 2 - 15, HEIGHT
         )
         self.divider = pygame.image.load("images/utility/brick_divider.png")
-        self.round_display = pygame.image.load("images/utility/round_background.png")
+        self.round_display = pygame.image.load("images/utility/round_bg.png")
         self.game_info_bg = pygame.image.load("images/utility/game_info_bg.png")
         self.red_health_bar = pygame.image.load("images/utility/red_health_bar.png")
         self.green_health_bar = pygame.image.load(
@@ -65,6 +65,13 @@ class Game:
         )
         self.green_health_bar = pygame.transform.scale(
             self.green_health_bar, (WIDTH * (15 / 32), HEIGHT / 24)
+        )
+        self.game_info_bg = pygame.transform.scale(
+            self.game_info_bg,
+            (
+                self.game_info_bg.get_width() * 1.35,
+                self.game_info_bg.get_height() * 1.4,
+            ),
         )
 
     def load_map(self, map_name, width, height):
@@ -168,12 +175,12 @@ class Game:
         self.screen.blit(eco_text, ((WIDTH / 2) - 15, HEIGHT * (9 / 10)))
         quit_text = self.render_text("Quit?", self.text_font, TIME_COLOR, "BLACK", 2)
         self.screen.blit(
-            quit_text, ((WIDTH / 2) - 15, HEIGHT - quit_text.get_height() - 5)
+            quit_text, ((WIDTH / 2) - 15, HEIGHT - quit_text.get_height() - 12)
         )
         health_text = self.render_text(
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
-        self.screen.blit(health_text, (10, 3))
+        self.screen.blit(health_text, (50, 8))
 
     def run(self):
 
