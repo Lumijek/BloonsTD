@@ -190,7 +190,6 @@ class Game:
         bbb = self.randomBalloon()
         balloons.append(bbb)
         self.game_state.start_round()
-
         while True:
 
             for event in pygame.event.get():
