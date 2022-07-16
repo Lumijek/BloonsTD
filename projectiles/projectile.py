@@ -8,7 +8,9 @@ class Projectile:
         self.x = starting_x
         self.y = starting_y
         self.velocity = 500
-        self.img = None
+        self.img = pygame.image.load("images/projectile_images/d1.png")
+        self.img = pygame.transform.scale(self.img, (self.img.get_width() * 0.4, self.img.get_height() * 0.4))
+        self.img = pygame.transform.rotate(self.img, -130)
         self.angle = None
         self.tot_dis = 300
         self.dis_traveled = 0
@@ -39,6 +41,8 @@ class Projectile:
                     tempY,
                 ):
                     self.angle = math.atan2(diffY, diffX)
+                    self.img = pygame.transform.rotate(self.img, -math.degrees(self.angle))
+
                 else:
                     pass
 
@@ -60,7 +64,7 @@ class Projectile:
             self.dis_traveled += self.velocity * delta_time
 
     def draw(self, screen, delta_time):
-        pygame.draw.circle(screen, "BLACK", (self.x, self.y), 5)
+        screen.blit(self.img, (self.x, self.y))
         self.move_projectile(delta_time)
 
     def projectile_dead(self):

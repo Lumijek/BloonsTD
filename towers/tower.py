@@ -9,7 +9,7 @@ class Tower:
         self.range = 300
         self.price = None
         self.damage = None
-        self.img = pygame.image.load("images/tower_images/tt.png")
+        self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
         self.img = pygame.transform.scale(self.img, (60, 60))
         self.reload_tick = [0, 30]  # number of frames to wait before shooting again
         self.is_reloading = False

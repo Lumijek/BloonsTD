@@ -189,7 +189,7 @@ class Game:
         proj = []  # projectiles
         towers = []
         balloons = []
-        bbb = self.randomBalloon()
+        bbb = gb.GreenBalloon()
         balloons.append(bbb)
         self.game_state.start_round()
         previous_time = time.perf_counter()
