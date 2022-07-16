@@ -26,8 +26,8 @@ class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Bloons Tower Defense")
-        self.fps_font = pygame.font.SysFont("Arial", 18, bold=True)
-        self.text_font = pygame.font.Font("assets/oetztype.ttf", 18, bold=True)
+        self.fps_font = pygame.font.SysFont("Arial", 24, bold=True)
+        self.text_font = pygame.font.Font("assets/oetztype.ttf", 24, bold=True)
         self.path = []
         self.load_path()
         self.load_images()
@@ -244,7 +244,7 @@ class Game:
             self.display_game_information()
             # self.update_fps()
             pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(200)
 
 
 if __name__ == "__main__":
