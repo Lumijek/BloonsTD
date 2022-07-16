@@ -9,6 +9,7 @@ from balloons import balloon as b
 from towers import tower as t
 from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
+from balloons import greenBalloon as gb
 import gameManager
 
 pygame.init()
@@ -145,7 +146,7 @@ class Game:
     def randomBalloon(self):
         r = random.uniform(-1, 1)
         if r > 0:
-            return rb.RedBalloon()
+            return bb.BlueBalloon()
         else:
             return rb.RedBalloon()
 
