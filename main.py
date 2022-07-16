@@ -192,7 +192,6 @@ class Game:
         balloons.append(bbb)
         self.game_state.start_round()
         previous_time = time.perf_counter()
-        
         while True:
             delta_time = time.perf_counter() - previous_time
             previous_time = time.perf_counter() 
@@ -208,6 +207,7 @@ class Game:
                         towers.append(t.Tower(x, y))
                     else:
                         del ts
+
 
                 if event.type == pygame.QUIT:
                     pygame.quit()
