@@ -11,6 +11,7 @@ from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
 import gameManager
+import random
 
 pygame.init()
 
@@ -189,7 +190,7 @@ class Game:
         proj = []  # projectiles
         towers = []
         balloons = []
-        bbb = gb.GreenBalloon()
+        bbb = b.Balloon()
         balloons.append(bbb)
         self.game_state.start_round()
         previous_time = time.perf_counter()
@@ -204,6 +205,7 @@ class Game:
                     self.game_state.change_health(1)  # testing purposes
                     x, y = pygame.mouse.get_pos()
                     ts = t.Tower(x, y)
+                    balloons.append(b.Balloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(t.Tower(x, y))
                     else:
@@ -226,15 +228,21 @@ class Game:
                         if tower.can_shoot():
                             pr = projectile.Projectile(tower.get_x(), tower.get_y())
                             path, path_index = balloon.get_path_details()
-                            pr.projectile_target(balloon, path, path_index, delta_time)
-                            proj.append(pr)
-                            tower.is_reloading = True
-                            break
+                            if(pr.projectile_target(balloon, path, path_index, delta_time)):
+                                proj.append(pr)
+                                tower.is_reloading = True
+                                break
 
                 tower.reload()
 
             for i in range(len(proj)):
                 proj[i].draw(self.screen, delta_time)
+                projectile_mask = proj[i].get_mask()
+                for balloon in balloons:
+                    if(balloon.is_collided(projectile_mask, (proj[i].get_x(), proj[i].get_y()))):
+                        balloons.remove(balloon)
+                        proj[i].kill_projectile()
+                        
                 if proj[i].projectile_dead():
                     proj[i] = 0
 
@@ -243,9 +251,9 @@ class Game:
 
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
-            # self.update_fps()
+            #self.update_fps()
             pygame.display.update()
-            self.clock.tick(200)
+            self.clock.tick(60)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,8 @@ class Balloon:
     def __init__(self):
         self.health = 1
         self.velocity = 100
-        self.img = None
+        self.img = self.img = pygame.image.load("images/balloon_images/greenballoon.png").convert_alpha()
+        self.img = pygame.transform.scale(self.img, (31, 35))
         self.path = []
         self.load()
         self.x = self.path[0][0]
@@ -17,6 +18,7 @@ class Balloon:
         self.move_distance = 0
         self.current_angle = 0
         self.damage = 1
+        self.mask = pygame.mask.from_surface(self.img)
 
     def load(self):
         path_coords = []
@@ -30,8 +32,10 @@ class Balloon:
         self.health -= health_change
 
     def draw(self, screen, delta_time):
-        screen.blit(self.img, (self.x - 11, self.y - 11))
+        screen.blit(self.img, (self.x - 10, self.y - 10))
+        #screen.blit(self.mask.to_surface(), (self.x - 11, self.y - 11))
         self.move(delta_time)
+
 
     def show_path(self):
         return self.path
@@ -73,3 +77,7 @@ class Balloon:
 
     def get_path_details(self):
         return self.path, self.path_index
+
+    def is_collided(self, projectile_mask, projectile_coords):
+        return not (projectile_mask.overlap(self.mask, (self.x - 10 - projectile_coords[0], self.y - 10 - projectile_coords[1])) == None)
+

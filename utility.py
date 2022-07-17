@@ -40,3 +40,9 @@ def _circlepoints(r):
     points += [(x, -y) for x, y in points if y]
     points.sort()
     return points
+
+class SpatialHashGrid:
+    def __init__(self, bounds, dim):
+        self.bounds = bounds
+        self.dimensions = dimensions
+        self.cells = dict()

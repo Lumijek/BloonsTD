@@ -14,6 +14,8 @@ class Projectile:
         self.angle = None
         self.tot_dis = 300
         self.dis_traveled = 0
+        self.dead = False
+
 
     def projectile_target(self, balloon, path, path_index, delta_time):
         rangeBX = balloon.get_x()
@@ -42,15 +44,18 @@ class Projectile:
                 ):
                     self.angle = math.atan2(diffY, diffX)
                     self.img = pygame.transform.rotate(self.img, -math.degrees(self.angle))
+                    self.mask = pygame.mask.from_surface(self.img)
+                    return True
 
                 else:
-                    pass
+                    return False
 
             diffX += balloon.get_x_velocity() * delta_time
             diffY += balloon.get_y_velocity() * delta_time
             if count >= 600:
                 run = False
                 self.angle = 0
+                print("here")
 
     def show_dis(self, balloon):
         return math.sqrt(
@@ -68,7 +73,7 @@ class Projectile:
         self.move_projectile(delta_time)
 
     def projectile_dead(self):
-        if self.dis_traveled >= self.tot_dis:
+        if self.dis_traveled >= self.tot_dis or self.dead == True:
             return True
         return False
 
@@ -79,3 +84,16 @@ class Projectile:
             return False
         else:
             return True
+
+    def get_mask(self):
+        return self.mask
+
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
+    def kill_projectile(self):
+        self.dead = True
+
