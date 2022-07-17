@@ -41,6 +41,7 @@ def _circlepoints(r):
     points.sort()
     return points
 
+
 class SpatialHashGrid:
     def __init__(self, bounds, dim):
         self.bounds = bounds

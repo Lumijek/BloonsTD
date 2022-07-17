@@ -196,7 +196,7 @@ class Game:
         previous_time = time.perf_counter()
         while True:
             delta_time = time.perf_counter() - previous_time
-            previous_time = time.perf_counter() 
+            previous_time = time.perf_counter()
 
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -210,7 +210,6 @@ class Game:
                         towers.append(t.Tower(x, y))
                     else:
                         del ts
-
 
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -228,7 +227,9 @@ class Game:
                         if tower.can_shoot():
                             pr = projectile.Projectile(tower.get_x(), tower.get_y())
                             path, path_index = balloon.get_path_details()
-                            if(pr.projectile_target(balloon, path, path_index, delta_time)):
+                            if pr.projectile_target(
+                                balloon, path, path_index, delta_time
+                            ):
                                 proj.append(pr)
                                 tower.is_reloading = True
                                 break
@@ -239,10 +240,12 @@ class Game:
                 proj[i].draw(self.screen, delta_time)
                 projectile_mask = proj[i].get_mask()
                 for balloon in balloons:
-                    if(balloon.is_collided(projectile_mask, (proj[i].get_x(), proj[i].get_y()))):
+                    if balloon.is_collided(
+                        projectile_mask, (proj[i].get_x(), proj[i].get_y())
+                    ):
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
-                        
+
                 if proj[i].projectile_dead():
                     proj[i] = 0
 
@@ -251,7 +254,7 @@ class Game:
 
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
-            #self.update_fps()
+            # self.update_fps()
             pygame.display.update()
             self.clock.tick(60)
 
