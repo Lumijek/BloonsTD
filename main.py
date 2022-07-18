@@ -12,6 +12,8 @@ from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
 import gameManager
 import random
+import socket
+import struct
 
 pygame.init()
 
@@ -27,6 +29,8 @@ HEALTH_COLOR = (165, 227, 75)
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect(("localhost", 8000))
         pygame.display.set_caption("Bloons Tower Defense")
         self.fps_font = pygame.font.SysFont("Arial", 24, bold=True)
         self.text_font = pygame.font.Font("assets/oetztype.ttf", 24, bold=True)
@@ -190,7 +194,7 @@ class Game:
         proj = []  # projectiles
         towers = []
         balloons = []
-        bbb = b.Balloon()
+        bbb = gb.GreenBalloon()
         balloons.append(bbb)
         self.game_state.start_round()
         previous_time = time.perf_counter()
@@ -251,12 +255,14 @@ class Game:
 
             while 0 in proj:
                 proj.remove(0)
-
+            sc_im = pygame.image.tostring(self.screen, "RGB")
+            sc_im = struct.pack('>I', len(sc_im)) + sc_im
+            self.sock.sendall(sc_im)
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
             # self.update_fps()
             pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(120)
 
 
 if __name__ == "__main__":
