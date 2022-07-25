@@ -9,7 +9,7 @@ HEIGHT = 800
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Server")
-
+clock = pygame.time.Clock()
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -41,17 +41,5 @@ conn, addr = sock.accept()
 total_time = 0
 n = 0
 while True:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			sys.exit()
-	t = time.perf_counter()
 	data = recv_msg(conn)
-	total_time += time.perf_counter() - t
-	game_screen = pygame.image.fromstring(bytes(data), (WIDTH, HEIGHT), "RGB")
-	screen.blit(game_screen, (0, 0))
-	pygame.display.update()
-	n += 1
-	#if n == 420:
-	#	break
-print(total_time)
+	print(len(data))
