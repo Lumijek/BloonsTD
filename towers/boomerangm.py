@@ -11,6 +11,7 @@ class BoomerangMonkey(Tower):
         self.damage = None
         self.img = pygame.image.load("images/tower_images/boomerangm.png").convert_alpha()
         self.img = pygame.transform.scale(self.img, (60, 60))
+        self.img.set_alpha(255)
         self.reload_tick = [0, 20]  # number of frames to wait before shooting again
         self.is_reloading = False
         self.width = self.img.get_width()

@@ -3,8 +3,8 @@ import pygame
 
 
 class BlueBalloon(Balloon):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, x, y, path_index):
+        super().__init__(self, x, y, path_index)
         self.img = pygame.image.load(
             "images/balloon_images/blueballoon.png"
         ).convert_alpha()
