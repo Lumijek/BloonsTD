@@ -214,14 +214,12 @@ class Game:
                         towers.append(t.Tower(x, y))
                     else:
                         del ts
-                if event.type == pygame.KEYDOWN:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         print("dart")
                         x, y = pygame.mouse.get_pos()
                         ts = dm.DartMonkey(x, y)
-<<<<<<< HEAD
                         balloons.append(b.Balloon())
                         if self.can_place_tower(
                             self.path, (x, y), 20, ts.get_height() / 2
@@ -230,13 +228,6 @@ class Game:
                         else:
                             del ts
                     if event.key == pygame.K_2:
-=======
-                        if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
-                            towers.append(dm.DartMonkey(x, y))
-                        else:
-                            del ts
-                    if event.key == pygame.K_2: 
->>>>>>> cde5e1a48459a23c25178efc0ad88de0bd42278f
                         print("boomerang")
                         x, y = pygame.mouse.get_pos()
                         ts = bm.BoomerangMonkey(x, y)
