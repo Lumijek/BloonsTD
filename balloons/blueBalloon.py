@@ -12,3 +12,6 @@ class BlueBalloon(Balloon):
         self.img = pygame.transform.scale(self.img, img_size)
         self.health = 2
         self.damage = 2
+        self.spawn = ["red"]
+        self.id = "blue"
+
