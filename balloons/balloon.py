@@ -4,7 +4,7 @@ import pygame
 
 
 class Balloon:
-    def __init__(self, x, y, path_index):
+    def __init__(self, x=None, y=None, path_index=None):
         self.health = 1
         self.velocity = 100
         self.img = self.img = pygame.image.load(
@@ -13,9 +13,14 @@ class Balloon:
         self.img = pygame.transform.scale(self.img, (31, 35))
         self.path = []
         self.load()
-        self.x = self.path[0][0]
-        self.y = self.path[0][1]
-        self.path_index = 0
+        if not x:
+            self.x = self.path[0][0]
+            self.y = self.path[0][1]
+            self.path_index = 0
+        else:
+            self.x = x
+            self.y = y
+            self.path_index = path_index
         self.ic = (self.x, self.y)
         self.move_distance = 0
         self.current_angle = 0
