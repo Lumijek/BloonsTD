@@ -202,9 +202,8 @@ class Game:
             delta_time = time.perf_counter() - previous_time
             previous_time = time.perf_counter()
 
-
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     print("default tower")
                     self.game_state.change_round()  # testing purposes
                     self.game_state.change_health(1)  # testing purposes
@@ -216,23 +215,26 @@ class Game:
                     else:
                         del ts
 
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_1:
                         print("dart")
                         x, y = pygame.mouse.get_pos()
                         ts = dm.DartMonkey(x, y)
-                        ts.img.set_alpha(100)
-                        ts.draw(self.screen)
-                        if event.type == pygame.MOUSEBUTTONDOWN:
-                            if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
-                                towers.append(dm.DartMonkey(x, y))
-                            else:
-                                del ts
-                    if event.key == pygame.K_2: 
+                        balloons.append(b.Balloon())
+                        if self.can_place_tower(
+                            self.path, (x, y), 20, ts.get_height() / 2
+                        ):
+                            towers.append(dm.DartMonkey(x, y))
+                        else:
+                            del ts
+                    if event.key == pygame.K_2:
                         print("boomerang")
                         x, y = pygame.mouse.get_pos()
                         ts = bm.BoomerangMonkey(x, y)
                         balloons.append(b.Balloon())
-                        if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
+                        if self.can_place_tower(
+                            self.path, (x, y), 20, ts.get_height() / 2
+                        ):
                             towers.append(bm.BoomerangMonkey(x, y))
                         else:
                             del ts

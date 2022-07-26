@@ -2,7 +2,8 @@ import math
 import pygame
 from towers.tower import Tower
 
-class DartMonkey(Tower): 
+
+class DartMonkey(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.x = x
