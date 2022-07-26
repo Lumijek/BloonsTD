@@ -4,7 +4,7 @@ import pygame
 
 
 class Balloon:
-    def __init__(self):
+    def __init__(self, x, y, path_index):
         self.health = 1
         self.velocity = 100
         self.img = self.img = pygame.image.load(
@@ -21,6 +21,8 @@ class Balloon:
         self.current_angle = 0
         self.damage = 1
         self.mask = pygame.mask.from_surface(self.img)
+        self.spawn = None
+        self.id = None
 
     def load(self):
         path_coords = []
@@ -90,3 +92,7 @@ class Balloon:
             )
             == None
         )
+
+    def is_killed(self):
+        return (self.x, self.y, self.spawn)
+

@@ -8,3 +8,4 @@ class RedBalloon(Balloon):
         self.img = pygame.image.load("images/balloon_images/bb.png").convert_alpha()
         self.health = 1
         self.damage = 1
+        self.id = "red"
