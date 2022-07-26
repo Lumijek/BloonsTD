@@ -202,8 +202,9 @@ class Game:
             delta_time = time.perf_counter() - previous_time
             previous_time = time.perf_counter()
 
+
             for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.KEYDOWN:
                     print("default tower")
                     self.game_state.change_round()  # testing purposes
                     self.game_state.change_health(1)  # testing purposes

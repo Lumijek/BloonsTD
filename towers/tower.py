@@ -6,7 +6,7 @@ class Tower:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.range = 300
+        self.range = 100
         self.price = None
         self.damage = None
         self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
@@ -15,6 +15,10 @@ class Tower:
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
+        self.circ_img = pygame.Surface((self.range * 2, self.range * 2))
+        pygame.draw.circle(self.circ_img, "GREY", (self.range, self.range), self.range)
+        self.circ_img.set_alpha(155)
+
 
     def in_range(self, balloon):
         x_change = balloon.get_x() - self.x
@@ -41,6 +45,7 @@ class Tower:
         return False
 
     def draw(self, screen):
+        screen.blit(self.circ_img, (self.x - self.circ_img.get_width() / 2, self.y - self.circ_img.get_width() / 2))
         screen.blit(self.img, (self.x - self.width / 2, self.y - self.height / 2))
 
     def get_x(self):
