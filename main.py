@@ -66,14 +66,14 @@ class Game:
             "images/utility/green_health_bar.png"
         ).convert_alpha()
         self.blue_map = pygame.transform.flip(self.blue_map, True, False)
-        self.divider = pygame.transform.scale(self.divider, (30, HEIGHT))
+        self.divider = pygame.transform.smoothscale(self.divider, (30, HEIGHT))
         self.red_health_bar = pygame.transform.scale(
             self.red_health_bar, (WIDTH / 2, HEIGHT / 20)
         )
-        self.green_health_bar = pygame.transform.scale(
+        self.green_health_bar = pygame.transform.smoothscale(
             self.green_health_bar, (WIDTH * (15 / 32), HEIGHT / 24)
         )
-        self.game_info_bg = pygame.transform.scale(
+        self.game_info_bg = pygame.transform.smoothscale(
             self.game_info_bg,
             (
                 self.game_info_bg.get_width() * 1.35,
@@ -84,7 +84,7 @@ class Game:
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
-        current_map = pygame.transform.scale(current_map, (width, height))
+        current_map = pygame.transform.smoothscale(current_map, (width, height))
         current_map = pygame.transform.rotate(current_map, 0)
 
         return current_map
@@ -96,7 +96,7 @@ class Game:
 
     def display_images(self, health_ratio):
         self.screen.blit(self.red_health_bar, (0, 0))
-        self.green_health_bar = pygame.transform.scale(
+        self.green_health_bar = pygame.transform.smoothscale(
             self.green_health_bar, (WIDTH * (15 / 32) * health_ratio, HEIGHT / 24)
         )
         self.screen.blit(self.green_health_bar, (0, 3))
@@ -258,6 +258,8 @@ class Game:
                     sys.exit()
 
             self.display_map()
+            self.display_images(self.game_state.get_player_health_ratio())
+            self.display_game_information()
 
             for balloon in balloons:
                 balloon.draw(self.screen, delta_time)
@@ -286,7 +288,6 @@ class Game:
                         projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
                     ):
                         bL = self.inst_balloon(balloon.is_killed())
-                        print(bL)
                         balloons.append(bL[0])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()

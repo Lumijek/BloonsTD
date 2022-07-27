@@ -27,6 +27,7 @@ class Balloon:
         self.damage = 1
         self.mask = pygame.mask.from_surface(self.img)
         self.id = None
+        self.spawn = None
 
     def load(self):
         path_coords = []
