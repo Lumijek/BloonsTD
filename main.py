@@ -149,20 +149,22 @@ class Game:
         return surf
 
     
-    def inst_balloon(self, xyz):
+    def inst_balloon(self, start_info):
         rBal = []
-        x1 = xyz[0]
-        y1 = xyz[1]
-        balList = xyz[2]
-        for i in balList:
+        x = start_info[0]
+        y = start_info[1]
+        balloon_list = start_info[2]
+        path_index = start_info[3]
+        for i in balloon_list:
+            print(i)
             num = int(i[0])
-            id = i[1:]
-            if id == "red":
+            balloon_id = i[1:]
+            if balloon_id == "red":
                 for _ in range(num):
-                    rBal.append(rb.RedBalloon(x1,y1))
-            if id == "blue":
+                    rBal.append(rb.RedBalloon(x , y, path_index))
+            if balloon_id == "blue":
                 for _ in range(num):
-                    rBal.append(bb.BlueBalloon(x1,y1))
+                    rBal.append(bb.BlueBalloon(x , y, path_index))
         return rBal
 
 
