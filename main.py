@@ -286,6 +286,7 @@ class Game:
                         projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
                     ):
                         bL = self.inst_balloon(balloon.is_killed())
+                        print(bL)
                         balloons.append(bL[0])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()

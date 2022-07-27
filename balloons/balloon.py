@@ -26,7 +26,6 @@ class Balloon:
         self.current_angle = 0
         self.damage = 1
         self.mask = pygame.mask.from_surface(self.img)
-        self.spawn = ["2green"]
         self.id = None
 
     def load(self):
