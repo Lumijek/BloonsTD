@@ -12,7 +12,7 @@ class DartMonkey(Tower):
         self.price = None
         self.damage = None
         self.img = pygame.image.load("images/tower_images/dartm.png").convert_alpha()
-        self.img = pygame.transform.scale(self.img, (60, 60))
+        self.img = pygame.transform.smoothscale(self.img, (60, 60))
         self.reload_tick = [0, 20]  # number of frames to wait before shooting again
         self.is_reloading = False
         self.width = self.img.get_width()

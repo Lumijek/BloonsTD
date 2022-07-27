@@ -58,7 +58,6 @@ class Projectile:
             if count >= 600:
                 run = False
                 self.angle = 0
-                print("here")
 
     def show_dis(self, balloon):
         return math.sqrt(
@@ -72,8 +71,8 @@ class Projectile:
             self.dis_traveled += self.velocity * delta_time
 
     def draw(self, screen, delta_time):
-        screen.blit(self.img, (self.x, self.y))
         self.move_projectile(delta_time)
+        screen.blit(self.img, (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2))
 
     def projectile_dead(self):
         if self.dis_traveled >= self.tot_dis or self.dead == True:
