@@ -283,8 +283,8 @@ class Game:
                     if balloon.is_collided(
                         projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
                     ):
-                        #bL = self.inst_balloon(balloon.is_killed())
-                        #balloons.append(bL)
+                        bL = self.inst_balloon(balloon.is_killed())
+                        balloons.append(bL[0])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
 
