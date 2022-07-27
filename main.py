@@ -148,7 +148,6 @@ class Game:
         surf.blit(text_surface, (outline_width, outline_width))
         return surf
 
-    
     def inst_balloon(self, start_info):
         rBal = []
         x = start_info[0]
@@ -162,12 +161,11 @@ class Game:
             balloon_id = i[1:]
             if balloon_id == "red":
                 for _ in range(num):
-                    rBal.append(rb.RedBalloon(x , y, path_index))
+                    rBal.append(rb.RedBalloon(x, y, path_index))
             if balloon_id == "blue":
                 for _ in range(num):
-                    rBal.append(bb.BlueBalloon(x , y, path_index))
+                    rBal.append(bb.BlueBalloon(x, y, path_index))
         return rBal
-
 
     def display_game_information(self):
         round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
@@ -202,7 +200,6 @@ class Game:
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
         self.screen.blit(health_text, (50, 8))
-    
 
     def run(self):
 
@@ -266,9 +263,17 @@ class Game:
             for tower in towers:
                 tower.draw(self.screen)
                 for balloon in balloons:
-                    if tower.in_range(balloon.mask, (balloon.get_x() - balloon.img.get_width() / 2, balloon.get_y() - balloon.img.get_height() / 2)):
+                    if tower.in_range(
+                        balloon.mask,
+                        (
+                            balloon.get_x() - balloon.img.get_width() / 2,
+                            balloon.get_y() - balloon.img.get_height() / 2,
+                        ),
+                    ):
                         if tower.can_shoot():
-                            pr = projectile.Projectile(tower.get_center_x(), tower.get_center_y())
+                            pr = projectile.Projectile(
+                                tower.get_center_x(), tower.get_center_y()
+                            )
                             path, path_index = balloon.get_path_details()
                             if pr.projectile_target(
                                 balloon, path, path_index, delta_time
@@ -277,25 +282,36 @@ class Game:
                                 tower.is_reloading = True
                                 break
 
-                tower.reload()
+                tower.reload(delta_time)
 
+            new_balloons = []
             for i in range(len(proj)):
                 proj[i].draw(self.screen, delta_time)
                 projectile_mask = proj[i].get_mask()
                 for balloon in balloons:
                     if balloon.is_collided(
-                        projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
-                    ):
+                        projectile_mask,
+                        (
+                            proj[i].get_x() - proj[i].img.get_width() / 2,
+                            proj[i].get_y() - proj[i].img.get_height() / 2,
+                        ),
+                    ):  
+
+                        #proj[i].durability -= 1
                         bL = self.inst_balloon(balloon.is_killed())
                         if bL != None:
-                            balloons.append(bL[0])
+                            new_balloons.append(bL[0])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
 
                 if proj[i].projectile_dead():
                     proj[i] = 0
+            balloons += new_balloons 
             x, y = pygame.mouse.get_pos()
-            self.screen.blit(t.Tower.img, (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2))
+            self.screen.blit(
+                t.Tower.img,
+                (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2),
+            )
             while 0 in proj:
                 proj.remove(0)
             self.display_images(self.game_state.get_player_health_ratio())

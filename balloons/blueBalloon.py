@@ -3,9 +3,7 @@ import pygame
 
 
 class BlueBalloon(Balloon):
-
-    
-    def __init__(self, x = None, y = None, path_index = None):
+    def __init__(self, x=None, y=None, path_index=None):
         super().__init__(x, y, path_index)
         self.img = pygame.image.load(
             "images/balloon_images/blueballoon.png"
@@ -16,4 +14,3 @@ class BlueBalloon(Balloon):
         self.damage = 2
         self.spawn = ["1red"]
         self.id = "blue"
-

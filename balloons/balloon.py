@@ -42,7 +42,10 @@ class Balloon:
 
     def draw(self, screen, delta_time):
         self.move(delta_time)
-        screen.blit(self.img, (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2))
+        screen.blit(
+            self.img,
+            (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2),
+        )
         pygame.draw.circle(screen, "BLACK", (self.x, self.y), 3)
         # screen.blit(self.mask.to_surface(), (self.x - 11, self.y - 11))
 
@@ -101,4 +104,3 @@ class Balloon:
 
     def is_killed(self):
         return (self.x, self.y, self.spawn, self.path_index)
-

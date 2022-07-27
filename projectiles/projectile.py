@@ -17,6 +17,7 @@ class Projectile:
         self.tot_dis = 300
         self.dis_traveled = 0
         self.dead = False
+        self.durability = 1
 
     def projectile_target(self, balloon, path, path_index, delta_time):
         rangeBX = balloon.get_x()
@@ -72,7 +73,10 @@ class Projectile:
 
     def draw(self, screen, delta_time):
         self.move_projectile(delta_time)
-        screen.blit(self.img, (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2))
+        screen.blit(
+            self.img,
+            (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2),
+        )
 
     def projectile_dead(self):
         if self.dis_traveled >= self.tot_dis or self.dead == True:

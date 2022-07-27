@@ -1,6 +1,7 @@
 import math
 import pygame
 
+
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
     img = pygame.transform.smoothscale(img, (60, 60))
@@ -11,10 +12,11 @@ class Tower:
         self.range = 100
         self.price = None
         self.damage = None
-        #self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
-        #self.img = pygame.transform.scale(self.img, (60, 60))
+        # self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
+        # self.img = pygame.transform.scale(self.img, (60, 60))
         self.img.convert_alpha()
-        self.reload_tick = [0, 20]  # number of frames to wait before shooting again
+        self.time_since_reload = 0  # time since last shot
+        self.reload_time = 0.5
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
@@ -38,21 +40,25 @@ class Tower:
     def is_tower_reloading(self):
         return self.is_reloading
 
-    def reload(self):
-        if self.is_reloading:
-            self.reload_tick[0] += 1
-            if self.reload_tick[0] == self.reload_tick[1]:
-                self.reload_tick[0] = 0
-                self.is_reloading = False
+    def reload(self, dt):
+        self.time_since_reload += dt
 
     def can_shoot(self):
 
-        if self.reload_tick[0] == 0:
+        if self.time_since_reload >= self.reload_time:
+            self.time_since_reload = 0
+            self.reloading = True
             return True
         return False
 
     def draw(self, screen):
-        screen.blit(self.circ_img, (self.x - self.circ_img.get_width() / 2, self.y - self.circ_img.get_width() / 2))
+        screen.blit(
+            self.circ_img,
+            (
+                self.x - self.circ_img.get_width() / 2,
+                self.y - self.circ_img.get_width() / 2,
+            ),
+        )
         screen.blit(self.img, (self.x - self.width / 2, self.y - self.height / 2))
 
     def get_center_x(self):
