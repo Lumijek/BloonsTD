@@ -1,23 +1,25 @@
 import math
 import pygame
 
-
 class Tower:
+    img = pygame.image.load("images/tower_images/tt.png")
+    img = pygame.transform.smoothscale(img, (60, 60))
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.range = 100
         self.price = None
         self.damage = None
-        self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
-        self.img = pygame.transform.scale(self.img, (60, 60))
+        #self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
+        #self.img = pygame.transform.scale(self.img, (60, 60))
+        self.img.convert_alpha()
         self.reload_tick = [0, 20]  # number of frames to wait before shooting again
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.circ_img = pygame.Surface((self.range * 2, self.range * 2))
         pygame.draw.circle(self.circ_img, "GREY", (self.range, self.range), self.range)
-        self.circ_img.set_alpha(155)
+        self.circ_img.set_alpha(120)
 
 
     def in_range(self, balloon):

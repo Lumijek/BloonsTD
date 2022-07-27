@@ -276,7 +276,8 @@ class Game:
 
                 if proj[i].projectile_dead():
                     proj[i] = 0
-
+            x, y = pygame.mouse.get_pos()
+            self.screen.blit(t.Tower.img, (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2))
             while 0 in proj:
                 proj.remove(0)
             # self.update_fps()
