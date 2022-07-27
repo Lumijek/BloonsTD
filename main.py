@@ -263,9 +263,9 @@ class Game:
             for tower in towers:
                 tower.draw(self.screen)
                 for balloon in balloons:
-                    if tower.in_range(balloon):
+                    if tower.in_range(balloon.mask, (balloon.get_x() - balloon.img.get_width() / 2, balloon.get_y() - balloon.img.get_height() / 2)):
                         if tower.can_shoot():
-                            pr = projectile.Projectile(tower.get_x(), tower.get_y())
+                            pr = projectile.Projectile(tower.get_center_x(), tower.get_center_y())
                             path, path_index = balloon.get_path_details()
                             if pr.projectile_target(
                                 balloon, path, path_index, delta_time
@@ -281,7 +281,7 @@ class Game:
                 projectile_mask = proj[i].get_mask()
                 for balloon in balloons:
                     if balloon.is_collided(
-                        projectile_mask, (proj[i].get_x(), proj[i].get_y())
+                        projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
                     ):
                         #bL = self.inst_balloon(balloon.is_killed())
                         #balloons.append(bL)

@@ -17,7 +17,7 @@ def find_closest_point(middle_pixel_path, point):
     return tuple(x)
 
 
-# Copied from the ptext library
+# Code from the ptext library
 _circle_cache = {}
 
 

@@ -10,7 +10,7 @@ class Balloon:
         self.img = self.img = pygame.image.load(
             "images/balloon_images/greenballoon.png"
         ).convert_alpha()
-        self.img = pygame.transform.scale(self.img, (31, 35))
+        self.img = pygame.transform.smoothscale(self.img, (31, 35))
         self.path = []
         self.load()
         if not x:
@@ -41,9 +41,10 @@ class Balloon:
         self.health -= health_change
 
     def draw(self, screen, delta_time):
-        screen.blit(self.img, (self.x - 10, self.y - 10))
-        # screen.blit(self.mask.to_surface(), (self.x - 11, self.y - 11))
         self.move(delta_time)
+        screen.blit(self.img, (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2))
+        pygame.draw.circle(screen, "BLACK", (self.x, self.y), 3)
+        # screen.blit(self.mask.to_surface(), (self.x - 11, self.y - 11))
 
     def show_path(self):
         return self.path
@@ -91,8 +92,8 @@ class Balloon:
             projectile_mask.overlap(
                 self.mask,
                 (
-                    self.x - 10 - projectile_coords[0],
-                    self.y - 10 - projectile_coords[1],
+                    self.x - self.img.get_width() / 2 - projectile_coords[0],
+                    self.y - self.img.get_height() / 2 - projectile_coords[1],
                 ),
             )
             == None
