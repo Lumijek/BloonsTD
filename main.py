@@ -155,8 +155,9 @@ class Game:
         y = start_info[1]
         balloon_list = start_info[2]
         path_index = start_info[3]
+        if balloon_list == None:
+            return None
         for i in balloon_list:
-            print(i)
             num = int(i[0])
             balloon_id = i[1:]
             if balloon_id == "red":
@@ -223,7 +224,7 @@ class Game:
                     self.game_state.change_health(1)  # testing purposes
                     x, y = pygame.mouse.get_pos()
                     ts = t.Tower(x, y)
-                    balloons.append(b.Balloon())
+                    balloons.append(gb.GreenBalloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(t.Tower(x, y))
                     else:
@@ -258,8 +259,6 @@ class Game:
                     sys.exit()
 
             self.display_map()
-            self.display_images(self.game_state.get_player_health_ratio())
-            self.display_game_information()
 
             for balloon in balloons:
                 balloon.draw(self.screen, delta_time)
@@ -288,7 +287,8 @@ class Game:
                         projectile_mask, (proj[i].get_x() - proj[i].img.get_width() / 2, proj[i].get_y() - proj[i].img.get_height() / 2)
                     ):
                         bL = self.inst_balloon(balloon.is_killed())
-                        balloons.append(bL[0])
+                        if bL != None:
+                            balloons.append(bL[0])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
 
@@ -298,7 +298,8 @@ class Game:
             self.screen.blit(t.Tower.img, (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2))
             while 0 in proj:
                 proj.remove(0)
-            # self.update_fps()
+            self.display_images(self.game_state.get_player_health_ratio())
+            self.display_game_information()
             pygame.display.update()
             self.clock.tick(120)
 
