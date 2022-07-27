@@ -2,7 +2,7 @@ import ast
 import pygame
 import sys
 import time
-from numpy import random
+from numpy import empty, random
 from utility import *
 from utility import _circlepoints
 from balloons import balloon as b
@@ -148,12 +148,23 @@ class Game:
         surf.blit(text_surface, (outline_width, outline_width))
         return surf
 
-    def randomBalloon(self):
-        r = random.uniform(-1, 1)
-        if r > 0:
-            return bb.BlueBalloon()
-        else:
-            return rb.RedBalloon()
+    
+    def inst_balloon(self, xyz):
+        rBal = []
+        x1 = xyz[0]
+        y1 = xyz[1]
+        balList = xyz[2]
+        for i in balList:
+            num = int(i[0])
+            id = i[1:]
+            if id == "red":
+                for _ in range(num):
+                    rBal.append(rb.RedBalloon(x1,y1))
+            if id == "blue":
+                for _ in range(num):
+                    rBal.append(bb.BlueBalloon(x1,y1))
+        return rBal
+
 
     def display_game_information(self):
         round_text = self.render_text("Round", self.text_font, ROUND_COLOR, "BLACK", 2)
@@ -188,6 +199,7 @@ class Game:
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
         self.screen.blit(health_text, (50, 8))
+    
 
     def run(self):
 
@@ -271,6 +283,8 @@ class Game:
                     if balloon.is_collided(
                         projectile_mask, (proj[i].get_x(), proj[i].get_y())
                     ):
+                        #bL = self.inst_balloon(balloon.is_killed())
+                        #balloons.append(bL)
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
 
