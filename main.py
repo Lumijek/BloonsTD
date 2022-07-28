@@ -289,7 +289,7 @@ class Game:
                         ts = bm.BoomerangMonkey(x, y)
                     else :
                         ts = t.Tower(x, y)
-                    balloons.append(b.Balloon())
+                    balloons.append(gb.GreenBalloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
