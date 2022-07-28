@@ -8,7 +8,7 @@ class BlueBalloon(Balloon):
         self.img = pygame.image.load(
             "images/balloon_images/blueballoon.png"
         ).convert_alpha()
-        img_size = (39, 41)
+        img_size = (29,33)
         self.img = pygame.transform.smoothscale(self.img, img_size)
         self.health = 2
         self.damage = 2
