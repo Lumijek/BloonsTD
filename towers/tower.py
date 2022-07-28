@@ -5,13 +5,18 @@ import pygame
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
     img = pygame.transform.smoothscale(img, (60, 60))
+    range = 100
+    circ_img = pygame.Surface((range * 2, range * 2))
+    pygame.draw.circle(circ_img, "BLACK", (range, range), range)
+    circ_img.set_alpha(100)
+    range_mask = pygame.mask.from_surface(circ_img)
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.range = 100
         self.price = None
         self.damage = None
+        self.range = 100
         # self.img = pygame.image.load("images/tower_images/tt.png").convert_alpha()
         # self.img = pygame.transform.scale(self.img, (60, 60))
         self.img.convert_alpha()
@@ -21,9 +26,15 @@ class Tower:
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.circ_img = pygame.Surface((self.range * 2, self.range * 2))
-        pygame.draw.circle(self.circ_img, "GREY", (self.range, self.range), self.range)
-        self.circ_img.set_alpha(120)
+        pygame.draw.circle(self.circ_img, "BLACK", (self.range, self.range), self.range)
+        self.circ_img.set_alpha(100)
         self.range_mask = pygame.mask.from_surface(self.circ_img)
+        self.id = [__class__.__name__]
+        print(__class__.__name__)
+        self.place_circ = False
+
+    def getCircle(self):
+        return self.circ_img
 
     def in_range(self, balloon_mask, balloon_coords):
         return not (
