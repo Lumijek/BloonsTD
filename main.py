@@ -21,6 +21,7 @@ pygame.init()
 
 WIDTH = 1280
 HEIGHT = 800
+START_PIXEL = 140
 ROUND_COLOR = (207, 163, 21)
 TIME_COLOR = (155, 183, 199)
 MONEY_COLOR = (220, 220, 220)
@@ -58,6 +59,9 @@ class Game:
         self.blue_map = self.load_map(
             "images/maps/bloon_map_1.png", WIDTH / 2 - 15, HEIGHT
         )
+        self.player_1_bg = pygame.image.load("images/utility/player_1_bg.png").convert_alpha()
+        self.player_2_bg = pygame.image.load("images/utility/player_2_bg.png").convert_alpha()
+
         self.divider = pygame.image.load("images/utility/brick_divider.png")
         self.round_display = pygame.image.load("images/utility/round_bg.png")
         self.game_info_bg = pygame.image.load("images/utility/game_info_bg.png")
@@ -66,12 +70,14 @@ class Game:
             "images/utility/green_health_bar.png"
         ).convert_alpha()
         self.blue_map = pygame.transform.flip(self.blue_map, True, False)
+        self.player_1_bg = pygame.transform.smoothscale(self.player_1_bg, (START_PIXEL, HEIGHT))
+        self.player_2_bg = pygame.transform.smoothscale(self.player_2_bg, (START_PIXEL, HEIGHT))
         self.divider = pygame.transform.smoothscale(self.divider, (30, HEIGHT))
         self.red_health_bar = pygame.transform.scale(
-            self.red_health_bar, (WIDTH / 2, HEIGHT / 20)
+            self.red_health_bar, (WIDTH / 2 - START_PIXEL, HEIGHT / 20)
         )
         self.green_health_bar = pygame.transform.smoothscale(
-            self.green_health_bar, (WIDTH * (15 / 32), HEIGHT / 24)
+            self.green_health_bar, (WIDTH * (15 / 32) - START_PIXEL, HEIGHT / 24)
         )
         self.game_info_bg = pygame.transform.smoothscale(
             self.game_info_bg,
@@ -80,26 +86,27 @@ class Game:
                 self.game_info_bg.get_height() * 1.4,
             ),
         )
-
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
-        current_map = pygame.transform.smoothscale(current_map, (width, height))
+        current_map = pygame.transform.smoothscale(current_map, (485, height))
         current_map = pygame.transform.rotate(current_map, 0)
 
         return current_map
 
     def display_map(self):
-        self.screen.blit(self.red_map, (0, 0))
+        self.screen.blit(self.red_map, (START_PIXEL, 0))
         self.screen.blit(self.blue_map, (WIDTH / 2 + 15, 0))
         self.screen.blit(self.divider, (WIDTH / 2 - 15, 0))
 
     def display_images(self, health_ratio):
-        self.screen.blit(self.red_health_bar, (0, 0))
-        self.green_health_bar = pygame.transform.smoothscale(
-            self.green_health_bar, (WIDTH * (15 / 32) * health_ratio, HEIGHT / 24)
+        self.screen.blit(self.player_1_bg, (0, 0))
+        self.screen.blit(self.player_2_bg, (WIDTH - START_PIXEL, 0))
+        self.screen.blit(self.red_health_bar, (START_PIXEL, 0))
+        self.green_health_bar = pygame.transform.scale(
+            self.green_health_bar, ((WIDTH * (15 / 32) - START_PIXEL) * health_ratio, HEIGHT / 24)
         )
-        self.screen.blit(self.green_health_bar, (0, 3))
+        self.screen.blit(self.green_health_bar, (START_PIXEL, 3))
         self.screen.blit(
             self.round_display, (WIDTH / 2 - self.round_display.get_width() / 2, 0)
         )
@@ -199,7 +206,7 @@ class Game:
         health_text = self.render_text(
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
-        self.screen.blit(health_text, (50, 8))
+        self.screen.blit(health_text, (START_PIXEL + 50, 4))
 
     def run(self):
 
@@ -306,7 +313,7 @@ class Game:
 
                 if proj[i].projectile_dead():
                     proj[i] = 0
-            balloons += new_balloons 
+            balloons += new_balloons
             x, y = pygame.mouse.get_pos()
             self.screen.blit(
                 t.Tower.img,
