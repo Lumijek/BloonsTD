@@ -267,15 +267,29 @@ class Game:
                                 y - dm.DartMonkey.img.get_height() / 2,
                             ),
                         )
+                    if event.key == pygame.K_2:
+                        print("dart")
+                        currentTshirt = "BoomerangMonkey"
+                        x, y = pygame.mouse.get_pos()
+                        self.screen.blit(
+                            bm.BoomerangMonkey.img,
+                            (
+                                x - bm.BoomerangMonkey.img.get_width() / 2,
+                                y - bm.BoomerangMonkey.img.get_height() / 2,
+                            ),
+                        )
 
                 if (event.type == pygame.MOUSEBUTTONDOWN) & (currentTshirt != None):
                     self.game_state.change_round()  # testing purposes
                     self.game_state.change_health(1)  # testing purposes
                     x, y = pygame.mouse.get_pos()
-                    ts = dm.DartMonkey(
-                        x, y
-                    )  # somehow get type of monkey from currentTshirt and place, hide circle
-                    balloons.append(gb.GreenBalloon())
+                    if currentTshirt == "DartMonkey":
+                        ts = dm.DartMonkey(x, y)
+                    elif currentTshirt == "BoomerangMonkey":
+                        ts = bm.BoomerangMonkey(x, y)
+                    else :
+                        ts = t.Tower(x, y)
+                    balloons.append(b.Balloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
@@ -338,7 +352,6 @@ class Game:
                 if proj[i].projectile_dead():
                     proj[i] = 0
             balloons += new_balloons
-            
             x, y = pygame.mouse.get_pos()
             if currentTshirt != None:
                 img, circ_img = tower_images[currentTshirt]
