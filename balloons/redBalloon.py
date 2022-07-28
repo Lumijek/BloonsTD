@@ -9,3 +9,4 @@ class RedBalloon(Balloon):
         self.health = 1
         self.damage = 1
         self.id = "red"
+        self.spawn = None

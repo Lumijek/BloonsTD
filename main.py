@@ -275,7 +275,7 @@ class Game:
                     ts = dm.DartMonkey(
                         x, y
                     )  # somehow get type of monkey from currentTshirt and place, hide circle
-                    balloons.append(b.Balloon())
+                    balloons.append(gb.GreenBalloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
@@ -338,6 +338,7 @@ class Game:
                 if proj[i].projectile_dead():
                     proj[i] = 0
             balloons += new_balloons
+            
             x, y = pygame.mouse.get_pos()
             if currentTshirt != None:
                 img, circ_img = tower_images[currentTshirt]

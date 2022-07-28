@@ -69,9 +69,7 @@ class Balloon:
         if seg_dis_trav > tot_seg_dis:
             self.path_index += 1
             if self.path_index == len(self.path) - 1:
-                self.path_index = 0
-                self.x, self.y = self.ic
-
+                pass #DoSomething
     def get_x(self):
         return self.x
 
