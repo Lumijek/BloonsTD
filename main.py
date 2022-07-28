@@ -1,5 +1,6 @@
 import ast
 from pickle import NONE
+from re import I
 import pygame
 import sys
 import time
@@ -13,6 +14,7 @@ from towers import boomerangm as bm
 from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
+from balloons import yellowBalloon as yb
 import gameManager
 import random
 import socket
@@ -178,11 +180,14 @@ class Game:
             num = int(i[0])
             balloon_id = i[1:]
             if balloon_id == "red":
-                for _ in range(num):
-                    rBal.append(rb.RedBalloon(x, y, path_index))
+                for i in range(num):
+                    rBal.append(rb.RedBalloon(x-i*5, y, path_index))
             if balloon_id == "blue":
-                for _ in range(num):
-                    rBal.append(bb.BlueBalloon(x, y, path_index))
+                for i in range(num):
+                    rBal.append(bb.BlueBalloon(x-i*5, y, path_index))
+            if balloon_id == "green":
+                for i in range(num):
+                    rBal.append(gb.GreenBalloon(x-i*15, y, path_index))
         return rBal
 
     def display_game_information(self):
@@ -289,7 +294,7 @@ class Game:
                         ts = bm.BoomerangMonkey(x, y)
                     else :
                         ts = t.Tower(x, y)
-                    balloons.append(gb.GreenBalloon())
+                    balloons.append(yb.YellowBalloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
@@ -344,8 +349,9 @@ class Game:
 
                         # proj[i].durability -= 1
                         bL = self.inst_balloon(balloon.is_killed())
-                        if bL != None:
-                            new_balloons.append(bL[0])
+                        if bL is not None:
+                            for jib in range(len(bL)):
+                                new_balloons.append(bL[jib])
                         balloons.remove(balloon)
                         proj[i].kill_projectile()
 
