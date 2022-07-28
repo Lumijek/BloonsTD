@@ -60,8 +60,12 @@ class Game:
         self.blue_map = self.load_map(
             "images/maps/bloon_map_1.png", WIDTH / 2 - 15, HEIGHT
         )
-        self.player_1_bg = pygame.image.load("images/utility/player_1_bg.png").convert_alpha()
-        self.player_2_bg = pygame.image.load("images/utility/player_2_bg.png").convert_alpha()
+        self.player_1_bg = pygame.image.load(
+            "images/utility/player_1_bg.png"
+        ).convert_alpha()
+        self.player_2_bg = pygame.image.load(
+            "images/utility/player_2_bg.png"
+        ).convert_alpha()
 
         self.divider = pygame.image.load("images/utility/brick_divider.png")
         self.round_display = pygame.image.load("images/utility/round_bg.png")
@@ -71,8 +75,12 @@ class Game:
             "images/utility/green_health_bar.png"
         ).convert_alpha()
         self.blue_map = pygame.transform.flip(self.blue_map, True, False)
-        self.player_1_bg = pygame.transform.smoothscale(self.player_1_bg, (START_PIXEL, HEIGHT))
-        self.player_2_bg = pygame.transform.smoothscale(self.player_2_bg, (START_PIXEL, HEIGHT))
+        self.player_1_bg = pygame.transform.smoothscale(
+            self.player_1_bg, (START_PIXEL, HEIGHT)
+        )
+        self.player_2_bg = pygame.transform.smoothscale(
+            self.player_2_bg, (START_PIXEL, HEIGHT)
+        )
         self.divider = pygame.transform.smoothscale(self.divider, (30, HEIGHT))
         self.red_health_bar = pygame.transform.scale(
             self.red_health_bar, (WIDTH / 2 - START_PIXEL, HEIGHT / 20)
@@ -87,6 +95,7 @@ class Game:
                 self.game_info_bg.get_height() * 1.4,
             ),
         )
+
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
@@ -105,7 +114,8 @@ class Game:
         self.screen.blit(self.player_2_bg, (WIDTH - START_PIXEL, 0))
         self.screen.blit(self.red_health_bar, (START_PIXEL, 0))
         self.green_health_bar = pygame.transform.scale(
-            self.green_health_bar, ((WIDTH * (15 / 32) - START_PIXEL) * health_ratio, HEIGHT / 24)
+            self.green_health_bar,
+            ((WIDTH * (15 / 32) - START_PIXEL) * health_ratio, HEIGHT / 24),
         )
         self.screen.blit(self.green_health_bar, (START_PIXEL, 3))
         self.screen.blit(
@@ -208,6 +218,7 @@ class Game:
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
         self.screen.blit(health_text, (START_PIXEL + 50, 4))
+
     def placeTower(self, screen, towerid):
         pass
 
@@ -215,10 +226,10 @@ class Game:
         proj = []  # projectiles
         towers = []
         balloons = []
-        towerdicktionary = {
-            "Tower" : t.Tower.img,
-            "DartMonkey" : dm.DartMonkey.img,
-            "BoomerangMonkey" : bm.BoomerangMonkey.img
+        tower_images = {
+            "Tower": [t.Tower.img, t.Tower.circ_img],
+            "DartMonkey": [dm.DartMonkey.img, dm.DartMonkey.circ_img],
+            "BoomerangMonkey": [bm.BoomerangMonkey.img, bm.BoomerangMonkey.circ_img],
         }
         currentTshirt = None
         bbb = gb.GreenBalloon()
@@ -236,25 +247,36 @@ class Game:
                         print("default tower")
                         currentTshirt = "Tower"
                         x, y = pygame.mouse.get_pos()
-                        self.screen.blit(t.Tower.img, (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2))
-                        circ= t.Tower.circ_img
-                        #self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
+                        self.screen.blit(
+                            t.Tower.img,
+                            (
+                                x - t.Tower.img.get_width() / 2,
+                                y - t.Tower.img.get_height() / 2,
+                            ),
+                        )
+                        circ = t.Tower.circ_img
+                        # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         print("dart")
-                        currentTshirt = "Dart Monkey"
+                        currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
-                        self.screen.blit(dm.DartMonkey.img, (x - dm.DartMonkey.img.get_width() / 2, y - dm.DartMonkey.img.get_height() / 2))
-                        
-                
+                        self.screen.blit(
+                            dm.DartMonkey.img,
+                            (
+                                x - dm.DartMonkey.img.get_width() / 2,
+                                y - dm.DartMonkey.img.get_height() / 2,
+                            ),
+                        )
+
                 if (event.type == pygame.MOUSEBUTTONDOWN) & (currentTshirt != None):
                     self.game_state.change_round()  # testing purposes
                     self.game_state.change_health(1)  # testing purposes
                     x, y = pygame.mouse.get_pos()
-                    ts = dm.DartMonkey(x, y) # somehow get type of monkey from currentTshirt and place, hide circle
+                    ts = dm.DartMonkey(
+                        x, y
+                    )  # somehow get type of monkey from currentTshirt and place, hide circle
                     balloons.append(b.Balloon())
-                    if self.can_place_tower(
-                        self.path, (x, y), 20, ts.get_height() / 2
-                    ):
+                    if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
                         del ts
@@ -304,9 +326,9 @@ class Game:
                             proj[i].get_x() - proj[i].img.get_width() / 2,
                             proj[i].get_y() - proj[i].img.get_height() / 2,
                         ),
-                    ):  
+                    ):
 
-                        #proj[i].durability -= 1
+                        # proj[i].durability -= 1
                         bL = self.inst_balloon(balloon.is_killed())
                         if bL != None:
                             new_balloons.append(bL[0])
@@ -316,11 +338,17 @@ class Game:
                 if proj[i].projectile_dead():
                     proj[i] = 0
             balloons += new_balloons
-            #x, y = pygame.mouse.get_pos()
-            #self.screen.blit(
-            #    t.Tower.img,
-            #    (x - t.Tower.img.get_width() / 2, y - t.Tower.img.get_height() / 2),
-            #)
+            x, y = pygame.mouse.get_pos()
+            if currentTshirt != None:
+                img, circ_img = tower_images[currentTshirt]
+                self.screen.blit(
+                    circ_img,
+                    (x - circ_img.get_width() / 2, y - circ_img.get_height() / 2),
+                )
+                self.screen.blit(
+                    img, (x - img.get_width() / 2, y - img.get_height() / 2)
+                )
+
             while 0 in proj:
                 proj.remove(0)
             self.display_images(self.game_state.get_player_health_ratio())
