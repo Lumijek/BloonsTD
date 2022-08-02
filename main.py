@@ -15,6 +15,7 @@ from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
 from balloons import yellowBalloon as yb
+from balloons import blackBalloon as blb
 import gameManager
 import random
 import socket
@@ -176,18 +177,39 @@ class Game:
         path_index = start_info[3]
         if balloon_list == None:
             return None
+        c = 1
         for i in balloon_list:
             num = int(i[0])
             balloon_id = i[1:]
             if balloon_id == "red":
-                for i in range(num):
-                    rBal.append(rb.RedBalloon(x-i*5, y, path_index))
+                for j in range(num):
+                    if (path_index%2==0):
+                        y = y-(j+c)*10
+                    else:
+                        x = x-(j+c)*10
+                    rBal.append(rb.RedBalloon(x, y, path_index))
             if balloon_id == "blue":
-                for i in range(num):
-                    rBal.append(bb.BlueBalloon(x-i*5, y, path_index))
+                for j in range(num):
+                    if (path_index%2==0):
+                        y = y-(j+c)*10
+                    else:
+                        x = x-(j+c)*10
+                    rBal.append(bb.BlueBalloon(x, y, path_index))
             if balloon_id == "green":
-                for i in range(num):
-                    rBal.append(gb.GreenBalloon(x-i*15, y, path_index))
+                for j in range(num):
+                    if path_index%2==0:
+                        y = y-(j+c)*10
+                    else:
+                        x = x-(j+c)*10
+                    rBal.append(gb.GreenBalloon(x, y, path_index))
+            if balloon_id == "yellow":
+                for j in range(num):
+                    if path_index%2==0:
+                        y = y-(j+c)*10
+                    else:
+                        x = x-(j+c)*10
+                    rBal.append(yb.YellowBalloon(x, y, path_index))
+            c+=1
         return rBal
 
     def display_game_information(self):
@@ -294,7 +316,7 @@ class Game:
                         ts = bm.BoomerangMonkey(x, y)
                     else :
                         ts = t.Tower(x, y)
-                    balloons.append(yb.YellowBalloon())
+                    balloons.append(blb.BlackBalloon())
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
