@@ -2,7 +2,7 @@ import ast
 import math
 import pygame
 
-
+PLAYER_TYPE = "one"
 class Balloon:
     def __init__(self, x=None, y=None, path_index=None):
         self.health = 1
@@ -28,18 +28,26 @@ class Balloon:
         self.mask = pygame.mask.from_surface(self.img)
         self.id = None
         self.spawn = None
-
+        
     def load(self):
         path_coords = []
-        with open("balloons/path2.txt", "r") as f:
-            for line in f:
-                path_coords.append(line.strip())
-        for coord in path_coords:
-            self.path.append(ast.literal_eval(coord))
+        if PLAYER_TYPE == "two":
+            with open("balloons/path2.txt", "r") as f:
+                for line in f:
+                    path_coords.append(line.strip())
+            for coord in path_coords:
+                self.path.append(ast.literal_eval(coord))
+        else:
+            with open("balloons/path.txt", "r") as f:
+                for line in f:
+                    path_coords.append(line.strip())
+            for coord in path_coords:
+                self.path.append(ast.literal_eval(coord))
+
 
     def decrease_health(self, health_change):
         self.health -= health_change
-
+  
     def draw(self, screen, delta_time):
         self.move(delta_time)
         screen.blit(
@@ -102,3 +110,4 @@ class Balloon:
 
     def is_killed(self):
         return (self.x, self.y, self.spawn, self.path_index)
+    
