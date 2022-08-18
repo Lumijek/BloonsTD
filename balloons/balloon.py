@@ -31,7 +31,7 @@ class Balloon:
 
     def load(self):
         path_coords = []
-        with open("balloons/path.txt", "r") as f:
+        with open("balloons/path2.txt", "r") as f:
             for line in f:
                 path_coords.append(line.strip())
         for coord in path_coords:

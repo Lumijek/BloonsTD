@@ -44,7 +44,7 @@ class Game:
         self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
-        self.player_type = 'one'
+        self.player_type = 'two'
 
     def load_path(self):
         lines = []
