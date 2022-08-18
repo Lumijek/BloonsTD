@@ -14,3 +14,4 @@ class GreenBalloon(Balloon):
         self.damage = 3
         self.spawn = ["1blue"]
         self.id = "green"
+        self.velocity = 80

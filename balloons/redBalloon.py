@@ -10,3 +10,4 @@ class RedBalloon(Balloon):
         self.damage = 1
         self.id = "red"
         self.spawn = None
+        self.velocity = 50

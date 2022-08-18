@@ -32,7 +32,7 @@ MONEY_COLOR = (220, 220, 220)
 ECO_COLOR = (30, 220, 0)
 HEALTH_COLOR = (165, 227, 75)
 
-
+#in the __init__ there will be a player_type (either one or two)
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -44,6 +44,7 @@ class Game:
         self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
+        self.player_type = 'one'
 
     def load_path(self):
         lines = []
@@ -143,7 +144,12 @@ class Game:
         closest_point = find_closest_point(middle_pixel_path, point)
         true_distance = euclidian_distance(closest_point, point)
         if true_distance > path_radius + tower_radius:
-            return True
+            if self.player_type == "one":
+                if point[0]>=START_PIXEL and point[0] <=WIDTH/2:
+                    return True
+            else:
+                if point[0] >= WIDTH/2 and point[0] <= WIDTH-START_PIXEL:
+                    return True
         return False
 
     # Method from https://stackoverflow.com/questions/54363047/how-to-draw-outline-on-the-fontpygame
@@ -246,9 +252,6 @@ class Game:
         )
         self.screen.blit(health_text, (START_PIXEL + 50, 4))
 
-    def placeTower(self, screen, towerid):
-        pass
-
     def run(self):
         proj = []  # projectiles
         towers = []
@@ -285,6 +288,7 @@ class Game:
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         print("dart")
+                        #print(len(towers))
                         currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -296,6 +300,7 @@ class Game:
                         )
                     if event.key == pygame.K_2:
                         print("dart")
+                        
                         currentTshirt = "BoomerangMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -305,10 +310,12 @@ class Game:
                                 y - bm.BoomerangMonkey.img.get_height() / 2,
                             ),
                         )
+                    if event.key == pygame.K_5:
+                        balloons.append(blb.BlackBalloon())
 
                 if (event.type == pygame.MOUSEBUTTONDOWN) & (currentTshirt != None):
                     self.game_state.change_round()  # testing purposes
-                    self.game_state.change_health(1)  # testing purposes
+                    #self.game_state.change_health(1)  # testing purposes, not needed rn
                     x, y = pygame.mouse.get_pos()
                     if currentTshirt == "DartMonkey":
                         ts = dm.DartMonkey(x, y)
@@ -316,7 +323,7 @@ class Game:
                         ts = bm.BoomerangMonkey(x, y)
                     else :
                         ts = t.Tower(x, y)
-                    balloons.append(blb.BlackBalloon())
+                    
                     if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:

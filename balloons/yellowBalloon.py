@@ -14,3 +14,4 @@ class YellowBalloon(Balloon):
         self.damage = 4
         self.spawn = ["2green"]
         self.id = "yellow"
+        self.velocity = 100

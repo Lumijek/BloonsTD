@@ -14,3 +14,4 @@ class BlackBalloon(Balloon):
         self.damage = 4
         self.spawn = ["2yellow","1green"]
         self.id = "black"
+        self.velocity = 115
