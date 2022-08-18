@@ -140,10 +140,14 @@ class Game:
         fps_text = self.fps_font.render(fps, 1, pygame.Color("WHITE"))
         self.screen.blit(fps_text, (10, 6))
 
-    def can_place_tower(self, middle_pixel_path, point, path_radius, tower_radius):
+    def can_place_tower(self, towers, middle_pixel_path, point, path_radius, tower_radius):
         closest_point = find_closest_point(middle_pixel_path, point)
         true_distance = euclidian_distance(closest_point, point)
-        if true_distance > path_radius + tower_radius:
+        on_tower = False
+        for tower in towers:
+            if (point[0] - tower.x) ** 2 + (point[1] - tower.y) ** 2 < 20 ** 2:
+                on_tower = True
+        if true_distance > path_radius + tower_radius and not on_tower:
             if self.player_type == "one":
                 if point[0]>=START_PIXEL and point[0] <=WIDTH/2:
                     return True
@@ -324,7 +328,7 @@ class Game:
                     else :
                         ts = t.Tower(x, y)
                     
-                    if self.can_place_tower(self.path, (x, y), 20, ts.get_height() / 2):
+                    if self.can_place_tower(towers, self.path, (x, y), 20, ts.get_height() / 2):
                         towers.append(ts)
                     else:
                         del ts
