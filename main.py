@@ -269,6 +269,7 @@ class Game:
         currentTshirt = None
         bbb = gb.GreenBalloon()
         balloons.append(bbb)
+
         self.game_state.start_round()
         previous_time = time.perf_counter()
         while True:
@@ -362,6 +363,7 @@ class Game:
                             if pr.projectile_target(
                                 balloon, path, path_index, delta_time
                             ):
+                                tower.projFired(pr.angle)
                                 proj.append(pr)
                                 tower.is_reloading = True
                                 break
