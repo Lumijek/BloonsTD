@@ -258,7 +258,7 @@ class Game:
         self.screen.blit(health_text, (START_PIXEL + 50, 4))
 
     def run(self):
-        proj = []  # projectiles
+        proj = [] 
         towers = []
         balloons = []
         tower_images = {
