@@ -32,7 +32,7 @@ MONEY_COLOR = (220, 220, 220)
 ECO_COLOR = (30, 220, 0)
 HEALTH_COLOR = (165, 227, 75)
 
-#in the __init__ there will be a player_type (either one or two)
+# in the __init__ there will be a player_type (either one or two)
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -141,19 +141,21 @@ class Game:
         fps_text = self.fps_font.render(fps, 1, pygame.Color("WHITE"))
         self.screen.blit(fps_text, (10, 6))
 
-    def can_place_tower(self, towers, middle_pixel_path, point, path_radius, tower_radius):
+    def can_place_tower(
+        self, towers, middle_pixel_path, point, path_radius, tower_radius
+    ):
         closest_point = find_closest_point(middle_pixel_path, point)
         true_distance = euclidian_distance(closest_point, point)
         on_tower = False
         for tower in towers:
-            if (point[0] - tower.x) ** 2 + (point[1] - tower.y) ** 2 < 20 ** 2:
+            if (point[0] - tower.x) ** 2 + (point[1] - tower.y) ** 2 < 20**2:
                 on_tower = True
         if true_distance > path_radius + tower_radius and not on_tower:
             if self.player_type == "one":
-                if point[0]>=START_PIXEL and point[0] <=WIDTH/2:
+                if point[0] >= START_PIXEL and point[0] <= WIDTH / 2:
                     return True
             else:
-                if point[0] >= WIDTH/2 and point[0] <= WIDTH-START_PIXEL:
+                if point[0] >= WIDTH / 2 and point[0] <= WIDTH - START_PIXEL:
                     return True
         return False
 
@@ -194,33 +196,33 @@ class Game:
             balloon_id = i[1:]
             if balloon_id == "red":
                 for j in range(num):
-                    if (path_index%2==0):
-                        y = y-(j+c)*10
+                    if path_index % 2 == 0:
+                        y = y - (j + c) * 10
                     else:
-                        x = x-(j+c)*10
+                        x = x - (j + c) * 10
                     rBal.append(rb.RedBalloon(x, y, path_index))
             if balloon_id == "blue":
                 for j in range(num):
-                    if (path_index%2==0):
-                        y = y-(j+c)*10
+                    if path_index % 2 == 0:
+                        y = y - (j + c) * 10
                     else:
-                        x = x-(j+c)*10
+                        x = x - (j + c) * 10
                     rBal.append(bb.BlueBalloon(x, y, path_index))
             if balloon_id == "green":
                 for j in range(num):
-                    if path_index%2==0:
-                        y = y-(j+c)*10
+                    if path_index % 2 == 0:
+                        y = y - (j + c) * 10
                     else:
-                        x = x-(j+c)*10
+                        x = x - (j + c) * 10
                     rBal.append(gb.GreenBalloon(x, y, path_index))
             if balloon_id == "yellow":
                 for j in range(num):
-                    if path_index%2==0:
-                        y = y-(j+c)*10
+                    if path_index % 2 == 0:
+                        y = y - (j + c) * 10
                     else:
-                        x = x-(j+c)*10
+                        x = x - (j + c) * 10
                     rBal.append(yb.YellowBalloon(x, y, path_index))
-            c+=1
+            c += 1
         return rBal
 
     def display_game_information(self):
@@ -258,7 +260,7 @@ class Game:
         self.screen.blit(health_text, (START_PIXEL + 50, 4))
 
     def run(self):
-        proj = [] 
+        proj = []
         towers = []
         balloons = []
         tower_images = {
@@ -296,7 +298,7 @@ class Game:
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         print("dart")
-                        #print(len(towers))
+                        # print(len(towers))
                         currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -308,7 +310,7 @@ class Game:
                         )
                     if event.key == pygame.K_2:
                         print("dart")
-                        
+
                         currentTshirt = "BoomerangMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -323,16 +325,18 @@ class Game:
 
                 if (event.type == pygame.MOUSEBUTTONDOWN) & (currentTshirt != None):
                     self.game_state.change_round()  # testing purposes
-                    #self.game_state.change_health(1)  # testing purposes, not needed rn
+                    # self.game_state.change_health(1)  # testing purposes, not needed rn
                     x, y = pygame.mouse.get_pos()
                     if currentTshirt == "DartMonkey":
                         ts = dm.DartMonkey(x, y)
                     elif currentTshirt == "BoomerangMonkey":
                         ts = bm.BoomerangMonkey(x, y)
-                    else :
+                    else:
                         ts = t.Tower(x, y)
-                    
-                    if self.can_place_tower(towers, self.path, (x, y), 20, ts.get_height() / 2):
+
+                    if self.can_place_tower(
+                        towers, self.path, (x, y), 20, ts.get_height() / 2
+                    ):
                         towers.append(ts)
                     else:
                         del ts
@@ -413,6 +417,7 @@ class Game:
             self.display_game_information()
             pygame.display.update()
             self.clock.tick(120)
+
 
 if __name__ == "__main__":
     game = Game()

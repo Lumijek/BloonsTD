@@ -2,6 +2,7 @@ import ast
 import math
 import pygame
 
+
 class Balloon:
     PLAYER_TYPE = None
 
@@ -29,7 +30,7 @@ class Balloon:
         self.mask = pygame.mask.from_surface(self.img)
         self.id = None
         self.spawn = None
-        
+
     def load(self):
         path_coords = []
         if self.PLAYER_TYPE == "two":
@@ -45,10 +46,9 @@ class Balloon:
             for coord in path_coords:
                 self.path.append(ast.literal_eval(coord))
 
-
     def decrease_health(self, health_change):
         self.health -= health_change
-  
+
     def draw(self, screen, delta_time):
         self.move(delta_time)
         screen.blit(
@@ -79,6 +79,7 @@ class Balloon:
             self.path_index += 1
             if self.path_index == len(self.path) - 1:
                 self.path_index = 0
+
     def get_x(self):
         return self.x
 
@@ -111,4 +112,3 @@ class Balloon:
 
     def is_killed(self):
         return (self.x, self.y, self.spawn, self.path_index)
-    

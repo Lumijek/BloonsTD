@@ -18,7 +18,7 @@ class Tower:
         self.damage = None
         self.img.convert_alpha()
         self.drawnImg = self.img
-        self.nr = self.drawnImg.get_rect(center= (self.x, self.y))
+        self.nr = self.drawnImg.get_rect(center=(self.x, self.y))
         self.time_since_reload = 0  # time since last shot
         self.reload_time = 0.5
         self.is_reloading = False
@@ -81,13 +81,13 @@ class Tower:
 
     def get_width(self):
         return self.width
-    
+
     def projFired(self, angle):
         self.angle = angle
         self.rotate_m = True
 
     def rot(self):
-        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle-90), 1)
-        newR=rotImg.get_rect(center = self.img.get_rect(center=(self.x, self.y)).center)
+        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle - 90), 1)
+        newR = rotImg.get_rect(center=self.img.get_rect(center=(self.x, self.y)).center)
         self.rotate_m = False
         return rotImg, newR
