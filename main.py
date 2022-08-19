@@ -45,7 +45,7 @@ class Game:
         self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
-        self.player_type = "two"
+        self.player_type = "one"
         b.Balloon.PLAYER_TYPE = self.player_type
 
     def load_path(self):
@@ -153,7 +153,7 @@ class Game:
         true_distance = euclidian_distance(closest_point, point)
         on_tower = False
         for tower in towers:
-            if (point[0] - tower.x) ** 2 + (point[1] - tower.y) ** 2 < 20**2:
+            if (point[0] - tower.x) ** 2 + (point[1] - tower.y) ** 2 < 25 * 25:
                 on_tower = True
         if true_distance > path_radius + tower_radius and not on_tower:
             if self.player_type == "one":
@@ -340,7 +340,7 @@ class Game:
                         ts = t.Tower(x, y)
 
                     if self.can_place_tower(
-                        towers, self.path, (x, y), 20, ts.get_height() / 2
+                        towers, self.path, (x, y), 10, ts.get_height() / 2
                     ):
                         towers.append(ts)
                     else:
