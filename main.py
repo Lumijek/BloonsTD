@@ -279,6 +279,8 @@ class Game:
             for event in pygame.event.get():
 
                 if event.type == pygame.KEYDOWN:
+                    bbb = blb.BlackBalloon()
+                    balloons.append(bbb)
                     if event.key == pygame.K_BACKQUOTE:
                         print("default tower")
                         currentTshirt = "Tower"
