@@ -26,6 +26,7 @@ pygame.init()
 WIDTH = 1280
 HEIGHT = 800
 START_PIXEL = 140
+BOTTOM_PIXEL = 130
 ROUND_COLOR = (207, 163, 21)
 TIME_COLOR = (155, 183, 199)
 MONEY_COLOR = (220, 220, 220)
@@ -73,6 +74,7 @@ class Game:
         ).convert_alpha()
 
         self.divider = pygame.image.load("images/utility/brick_divider.png")
+        self.bottom_bricks = pygame.image.load("images/utility/bottom_bricks.png")
         self.round_display = pygame.image.load("images/utility/round_bg.png")
         self.game_info_bg = pygame.image.load("images/utility/game_info_bg.png")
         self.red_health_bar = pygame.image.load("images/utility/red_health_bar.png")
@@ -100,12 +102,14 @@ class Game:
                 self.game_info_bg.get_height() * 1.4,
             ),
         )
+        self.bottom_bricks = pygame.transform.smoothscale(self.bottom_bricks, (WIDTH - self.player_1_bg.get_width() * 2, BOTTOM_PIXEL))
 
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
-        current_map = pygame.transform.smoothscale(current_map, (485, height))
-        current_map = pygame.transform.rotate(current_map, 0)
+        current_map = pygame.transform.smoothscale(current_map, (WIDTH / 2 - START_PIXEL - 15, height - BOTTOM_PIXEL))
+        print(height)
+        print(height - BOTTOM_PIXEL)
 
         return current_map
 
@@ -123,6 +127,7 @@ class Game:
             ((WIDTH * (15 / 32) - START_PIXEL) * health_ratio, HEIGHT / 24),
         )
         self.screen.blit(self.green_health_bar, (START_PIXEL, 3))
+        self.screen.blit(self.bottom_bricks, (START_PIXEL, HEIGHT - BOTTOM_PIXEL))
         self.screen.blit(
             self.round_display, (WIDTH / 2 - self.round_display.get_width() / 2, 0)
         )
