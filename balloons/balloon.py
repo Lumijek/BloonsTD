@@ -2,8 +2,9 @@ import ast
 import math
 import pygame
 
-PLAYER_TYPE = "one"
 class Balloon:
+    PLAYER_TYPE = None
+
     def __init__(self, x=None, y=None, path_index=None):
         self.health = 1
         self.velocity = 100
@@ -31,7 +32,7 @@ class Balloon:
         
     def load(self):
         path_coords = []
-        if PLAYER_TYPE == "two":
+        if self.PLAYER_TYPE == "two":
             with open("balloons/path2.txt", "r") as f:
                 for line in f:
                     path_coords.append(line.strip())
