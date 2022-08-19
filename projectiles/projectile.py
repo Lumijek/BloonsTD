@@ -56,7 +56,7 @@ class Projectile:
 
             diffX += balloon.get_x_velocity() * delta_time
             diffY += balloon.get_y_velocity() * delta_time
-            if count >= 600:
+            if count >= 100:
                 run = False
                 self.angle = 0
 
