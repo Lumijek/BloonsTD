@@ -1,13 +1,14 @@
+from cmath import inf
 import math
 import pygame
 from towers.tower import Tower
 
 
-class DartMonkey(Tower):
+class SniperMonkey(Tower):
 
-    img = pygame.image.load("images/tower_images/dartm.png")
-    img = pygame.transform.smoothscale(img, (70, 70))
-    t_range = 100
+    img = pygame.image.load("images/tower_images/sniperm.png")
+    img = pygame.transform.smoothscale(img, (90, 90))
+    t_range = 60
     circ_img = pygame.Surface((t_range * 2, t_range * 2))
     pygame.draw.circle(circ_img, (0, 0, 1), (t_range, t_range), t_range)
     circ_img.set_colorkey("Black")
@@ -24,3 +25,6 @@ class DartMonkey(Tower):
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
+
+    def in_range(self, balloon_mask, balloon_coords):
+        return True

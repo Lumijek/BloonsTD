@@ -11,6 +11,7 @@ from balloons import balloon as b
 from towers import tower as t
 from towers import dartm as dm
 from towers import boomerangm as bm
+from towers import sniperm as sm
 from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
@@ -272,6 +273,7 @@ class Game:
             "Tower": [t.Tower.img, t.Tower.circ_img],
             "DartMonkey": [dm.DartMonkey.img, dm.DartMonkey.circ_img],
             "BoomerangMonkey": [bm.BoomerangMonkey.img, bm.BoomerangMonkey.circ_img],
+            "SniperMonkey": [sm.SniperMonkey.img, sm.SniperMonkey.circ_img],
         }
         currentTshirt = None
         bbb = gb.GreenBalloon()
@@ -325,6 +327,18 @@ class Game:
                                 y - bm.BoomerangMonkey.img.get_height() / 2,
                             ),
                         )
+                    if event.key == pygame.K_3:
+                        print("sniper")
+
+                        currentTshirt = "SniperMonkey"
+                        x, y = pygame.mouse.get_pos()
+                        self.screen.blit(
+                            sm.SniperMonkey.img,
+                            (
+                                x - sm.SniperMonkey.img.get_width() / 2,
+                                y - sm.SniperMonkey.img.get_height() / 2,
+                            ),
+                        )
                     if event.key == pygame.K_5:
                         balloons.append(blb.BlackBalloon())
 
@@ -336,6 +350,8 @@ class Game:
                         ts = dm.DartMonkey(x, y)
                     elif currentTshirt == "BoomerangMonkey":
                         ts = bm.BoomerangMonkey(x, y)
+                    elif currentTshirt == "SniperMonkey":
+                        ts = sm.SniperMonkey(x, y)
                     else:
                         ts = t.Tower(x, y)
 
