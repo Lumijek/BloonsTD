@@ -11,6 +11,7 @@ from balloons import balloon as b
 from towers import tower as t
 from towers import dartm as dm
 from towers import boomerangm as bm
+from towers import tacks as ts
 from towers import sniperm as sm
 from projectiles import projectile
 from balloons import redBalloon as rb, blueBalloon as bb
@@ -273,6 +274,7 @@ class Game:
             "Tower": [t.Tower.img, t.Tower.circ_img],
             "DartMonkey": [dm.DartMonkey.img, dm.DartMonkey.circ_img],
             "BoomerangMonkey": [bm.BoomerangMonkey.img, bm.BoomerangMonkey.circ_img],
+            "TackShooter": [ts.TackShooter.img, ts.TackShooter.circ_img],
             "SniperMonkey": [sm.SniperMonkey.img, sm.SniperMonkey.circ_img],
         }
         currentTshirt = None
@@ -304,7 +306,6 @@ class Game:
                         circ = t.Tower.circ_img
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
-                        print("dart")
                         # print(len(towers))
                         currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
@@ -316,8 +317,6 @@ class Game:
                             ),
                         )
                     if event.key == pygame.K_2:
-                        print("dart")
-
                         currentTshirt = "BoomerangMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -328,8 +327,16 @@ class Game:
                             ),
                         )
                     if event.key == pygame.K_3:
-                        print("sniper")
-
+                        currentTshirt = "TackShooter"
+                        x, y = pygame.mouse.get_pos()
+                        self.screen.blit(
+                            ts.TackShooter.img,
+                            (
+                                x - ts.TackShooter.img.get_width() / 2,
+                                y - ts.TackShooter.img.get_height() / 2,
+                            ),
+                        )
+                    if event.key == pygame.K_4:
                         currentTshirt = "SniperMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -347,20 +354,22 @@ class Game:
                     # self.game_state.change_health(1)  # testing purposes, not needed rn
                     x, y = pygame.mouse.get_pos()
                     if currentTshirt == "DartMonkey":
-                        ts = dm.DartMonkey(x, y)
+                        twr = dm.DartMonkey(x, y)
                     elif currentTshirt == "BoomerangMonkey":
-                        ts = bm.BoomerangMonkey(x, y)
+                        twr = bm.BoomerangMonkey(x, y)
+                    elif currentTshirt == "TackShooter":
+                        twr = ts.TackShooter(x, y)
                     elif currentTshirt == "SniperMonkey":
-                        ts = sm.SniperMonkey(x, y)
+                        twr = sm.SniperMonkey(x, y)
                     else:
-                        ts = t.Tower(x, y)
+                        twr = t.Tower(x, y)
 
                     if self.can_place_tower(
-                        towers, self.path, (x, y), 10, ts.get_height() / 2
+                        towers, self.path, (x, y), 10, twr.get_height() / 2
                     ):
-                        towers.append(ts)
+                        towers.append(twr)
                     else:
-                        del ts
+                        del twr
                     currentTshirt = None
 
                 if event.type == pygame.QUIT:
