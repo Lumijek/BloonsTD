@@ -13,7 +13,7 @@ class Client:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.host = host
         self.port = port
-        self.addr = ((self.host, self.port))
+        self.addr = (self.host, self.port)
         self.name = name
 
     def send(self, data):

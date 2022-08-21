@@ -33,13 +33,16 @@ class Server:
                 player1, player2 = list(self.client_queue)[:2]
                 self.connections[player1] = player2
                 self.connections[player2] = player1
-                player1_thread = threading.Thread(target=self.handle_client, args=(player1,))
-                player2_thread = threading.Thread(target=self.handle_client, args=(player2,))
+                player1_thread = threading.Thread(
+                    target=self.handle_client, args=(player1,)
+                )
+                player2_thread = threading.Thread(
+                    target=self.handle_client, args=(player2,)
+                )
                 player1_thread.start()
                 player2_thread.start()
                 del self.client_queue[player1]
                 del self.client_queue[player2]
-
 
     def handle_client(self, client):
         while True:
@@ -62,7 +65,7 @@ class Server:
             self.sock.close()
             client.close()
             return
-            
+
     def start(self):
         signal.signal(signal.SIGINT, self.shut_down_server)
         signal.signal(signal.SIGHUP, self.shut_down_server)
