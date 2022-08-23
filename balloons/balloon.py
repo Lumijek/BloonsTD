@@ -30,6 +30,7 @@ class Balloon:
         self.mask = pygame.mask.from_surface(self.img)
         self.id = None
         self.spawn = None
+        self.dead = False
 
     def load(self):
         path_coords = []
@@ -78,6 +79,7 @@ class Balloon:
         if seg_dis_trav > tot_seg_dis:
             self.path_index += 1
             if self.path_index == len(self.path) - 1:
+                self.dead = True
                 self.path_index = 0
 
     def get_x(self):

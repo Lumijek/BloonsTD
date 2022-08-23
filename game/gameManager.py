@@ -1,4 +1,4 @@
-import player
+from game import player
 import time
 import threading
 

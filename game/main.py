@@ -5,8 +5,8 @@ import pygame
 import sys
 import time
 from numpy import empty, random
-from utility import *
-from utility import _circlepoints
+from .utility import *
+from .utility import _circlepoints
 from balloons import balloon as b
 from towers import tower as t
 from towers import dartm as dm
@@ -18,7 +18,7 @@ from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
 from balloons import yellowBalloon as yb
 from balloons import blackBalloon as blb
-import gameManager
+from game import gameManager
 import random
 import socket
 import struct
@@ -37,7 +37,7 @@ HEALTH_COLOR = (165, 227, 75)
 
 # in the __init__ there will be a player_type (either one or two)
 class Game:
-    def __init__(self):
+    def __init__(self, player_type):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Bloons Tower Defense")
         self.fps_font = pygame.font.SysFont("Arial", 24, bold=True)
@@ -47,7 +47,7 @@ class Game:
         self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
-        self.player_type = "one"
+        self.player_type = player_type
         b.Balloon.PLAYER_TYPE = self.player_type
 
     def load_path(self):
@@ -380,6 +380,8 @@ class Game:
 
             for balloon in balloons:
                 balloon.draw(self.screen, delta_time)
+                if balloon.dead:
+                    balloons.remove(balloon)
 
             for tower in towers:
                 tower.draw(self.screen)
@@ -424,7 +426,6 @@ class Game:
                         if bL is not None:
                             for jib in range(len(bL)):
                                 new_balloons.append(bL[jib])
-                        balloons.remove(balloon)
                         proj[i].kill_projectile()
 
                 if proj[i].projectile_dead():
@@ -450,6 +451,5 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game()
-    game.load_path()
+    game = Game("two")
     game.run()
