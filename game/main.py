@@ -448,8 +448,3 @@ class Game:
             self.display_game_information()
             pygame.display.update()
             self.clock.tick(120)
-
-
-if __name__ == "__main__":
-    game = Game("two")
-    game.run()
