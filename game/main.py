@@ -320,7 +320,7 @@ class Game:
         t = []
         for tower in towers:
             x, y, idx, angle = tower.info()
-            t.append(f"{round(x)} {round(y)} {idx} {round(angle)}")
+            t.append(f"{round(x)} {round(y)} {idx} {angle}")
         p = []
         for projectile in proj:
             x, y, idx, angle = projectile.info()
@@ -344,11 +344,12 @@ class Game:
             x, y, idx, angle = tower.split()
             x = int(x)
             y = int(y)
-            angle = int(angle)
+            angle = float(angle) % 360
             c_img = self.tower_images[idx]
             rotImg = pygame.transform.rotozoom(c_img, -math.degrees(angle) + 90, 1)
             newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
-            self.screen.blit(c_img, newR)
+            self.screen.blit(rotImg, newR)
+
 
         for projectile in projectiles:
             x, y, idx, angle = projectile.split()
@@ -389,7 +390,6 @@ class Game:
                     bbb = blb.BlackBalloon()
                     balloons.append(bbb)
                     if event.key == pygame.K_BACKQUOTE:
-                        print("default tower")
                         currentTshirt = "Tower"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -403,7 +403,6 @@ class Game:
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         # print(len(towers))
-                        currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
                             dm.DartMonkey.img,
