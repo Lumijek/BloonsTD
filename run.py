@@ -1,4 +1,4 @@
 from game import main
 
-x = main.Game("two")
+x = main.Game("one")
 x.run()

@@ -427,6 +427,7 @@ class Game:
                             for jib in range(len(bL)):
                                 new_balloons.append(bL[jib])
                         proj[i].kill_projectile()
+                        balloons.remove(balloon)
 
                 if proj[i].projectile_dead():
                     proj[i] = 0
