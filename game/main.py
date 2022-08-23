@@ -51,12 +51,12 @@ class Game:
         self.client.start()
         self.player_type = self.client.recv()
         b.Balloon.PLAYER_TYPE = self.player_type
-        self.tower_images =  {
+        self.tower_images = {
             "tower": t.Tower.img,
             "dart": dm.DartMonkey.img,
             "boomerang": bm.BoomerangMonkey.img,
             "tacks": ts.TackShooter.img,
-            "sniper": sm.SniperMonkey.img
+            "sniper": sm.SniperMonkey.img,
         }
         self.load_item_images()
 
@@ -328,7 +328,7 @@ class Game:
         self.client.send([b, t, p])
 
     def display_opponent_items(self):
-        #Send Balloons
+        # Send Balloons
         info = self.client.recv()
         balloons, towers, projectiles = info
         for balloon in balloons:
@@ -356,15 +356,11 @@ class Game:
             y = int(y)
             angle = float(angle)
             p_img = self.projectile_images[idx]
-            p_img = pygame.transform.rotozoom(
-                p_img, -math.degrees(angle), 1
-            )
+            p_img = pygame.transform.rotozoom(p_img, -math.degrees(angle), 1)
             self.screen.blit(
                 p_img,
                 (x - p_img.get_width() / 2, y - p_img.get_height() / 2),
             )
-
-
 
     def run(self):
         proj = []
