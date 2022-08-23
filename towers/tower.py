@@ -25,10 +25,11 @@ class Tower:
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.range_mask = pygame.mask.from_surface(self.circ_img)
-        self.id = [__class__.__name__]
+        self.id = "tower"
         self.place_circ = False
         self.rotate_m = False
         self.angle = 0
+        self.prev_angle = 0
 
     def in_range(self, balloon_mask, balloon_coords):
         return not (
@@ -67,6 +68,7 @@ class Tower:
             )
         if self.rotate_m:
             self.drawnImg, self.nr = self.rot()
+            self.prev_angle += self.angle
             self.angle = 0
         screen.blit(self.drawnImg, self.nr)
 
@@ -87,7 +89,10 @@ class Tower:
         self.rotate_m = True
 
     def rot(self):
-        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle - 90), 1)
+        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle) + 90, 1)
         newR = rotImg.get_rect(center=self.img.get_rect(center=(self.x, self.y)).center)
         self.rotate_m = False
         return rotImg, newR
+
+    def info(self):
+        return (self.x, self.y, self.id, self.prev_angle)

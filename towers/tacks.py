@@ -25,6 +25,7 @@ class TackShooter(Tower):
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
+        self.id = "tacks"
 
     def projFired(self, angle):
         self.rotate_m = False

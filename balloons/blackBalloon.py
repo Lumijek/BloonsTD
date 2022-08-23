@@ -10,6 +10,8 @@ class BlackBalloon(Balloon):
         ).convert_alpha()
         img_size = (33, 37)
         self.img = pygame.transform.smoothscale(self.img, img_size)
+        self.mask = pygame.mask.from_surface(self.img)
+
         self.health = 4
         self.damage = 4
         self.spawn = ["2yellow", "1green"]

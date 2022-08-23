@@ -22,6 +22,8 @@ class Client:
             self.sock.sendall(data)
         except Exception as e:
             print("Error sending data.")
+            print(e)
+            print(data)
             self.sock.close()
             os._exit(1)
             return
@@ -31,7 +33,7 @@ class Client:
             try:
                 data = self.sock.recv(4096)
                 data = pickle.loads(data)
-                print(data)
+                return data
                 if data == "Server shutting down!":
                     self.sock.close()
                     os._exit(1)
@@ -50,10 +52,8 @@ class Client:
 
     def start(self):
 
-        name = sys.argv[1]
+        name = "BOB"
         self.sock.connect(self.addr)
         self.sock.sendall(name.encode())
         signal.signal(signal.SIGINT, self.kill_client)
         signal.signal(signal.SIGHUP, self.kill_client)
-        recv_msg = threading.Thread(target=self.recv)
-        recv_msg.start()

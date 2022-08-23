@@ -3,6 +3,7 @@ from projectiles.projectile import Projectile
 import numpy, math
 import pygame
 
+
 class Boomerang(Projectile):
     def __init__(self, starting_x, starting_y):
         super().__init__(starting_x, starting_y)
@@ -52,12 +53,11 @@ class Boomerang(Projectile):
                 run = False
                 self.angle = 0
 
-
-    def getAngles(self,first_angle):
-        tot_travel = sqrt(self.dist_toTravel[0]**2 + self.dist_toTravel[1]**2)
-        one_way = self.tot_dis/2 -tot_travel
-        min_val = min(self.dist_toTravel[0],self.dist_toTravel[1])
-        s_sq = one_way ** 2 - min_val**2
+    def getAngles(self, first_angle):
+        tot_travel = sqrt(self.dist_toTravel[0] ** 2 + self.dist_toTravel[1] ** 2)
+        one_way = self.tot_dis / 2 - tot_travel
+        min_val = min(self.dist_toTravel[0], self.dist_toTravel[1])
+        s_sq = one_way**2 - min_val**2
         return math.atan2(min_val, sqrt(s_sq))
 
     def move_projectile(self, delta_time):

@@ -6,6 +6,7 @@ import random
 import time
 import pickle
 from pprint import pprint
+import random
 
 
 class Server:
@@ -33,6 +34,13 @@ class Server:
                 player1, player2 = list(self.client_queue)[:2]
                 self.connections[player1] = player2
                 self.connections[player2] = player1
+                player_select = random.uniform(0, 1)
+                if player_select > 0.5:
+                    player1.sendall(pickle.dumps("one"))
+                    player2.sendall(pickle.dumps("two"))
+                else:
+                    player1.sendall(pickle.dumps("two"))
+                    player2.sendall(pickle.dumps("one"))
                 player1_thread = threading.Thread(
                     target=self.handle_client, args=(player1,)
                 )
@@ -54,7 +62,6 @@ class Server:
                 self.send(self.connections[client], data)
 
             except Exception as e:
-                self.sock.close()
                 client.close()
                 return
 
@@ -76,3 +83,8 @@ class Server:
             name = client_socket.recv(128).decode()
             self.client_queue[client_socket] = name
             print(f"{name} ({addr[0]}) has joined the Server.")
+
+
+if __name__ == "__main__":
+    s = Server("localhost", 9000)
+    s.start()

@@ -6,7 +6,6 @@ import threading
 class GameManager:
     def __init__(self):
         self.player_1 = player.Player(150, 400, 250)
-        self.player_2 = player.Player(150, 400, 250)
         self.game_timer = 0
         self.round = 0
         self.eco_timer = 0

@@ -18,6 +18,7 @@ class Projectile:
         self.dis_traveled = 0
         self.dead = False
         self.durability = 1
+        self.id = "proj"
 
     def projectile_target(self, balloon, path, path_index, delta_time):
         rangeBX = balloon.get_x()
@@ -102,3 +103,6 @@ class Projectile:
 
     def kill_projectile(self):
         self.dead = True
+
+    def info(self):
+        return (self.x, self.y, self.id, self.angle)

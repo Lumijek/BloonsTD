@@ -25,6 +25,7 @@ class SniperMonkey(Tower):
         self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
+        self.id = "sniper"
 
     def in_range(self, balloon_mask, balloon_coords):
         return True

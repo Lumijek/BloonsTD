@@ -1,4 +1,9 @@
 from game import main
+from network.client import Client
 
-x = main.Game("one")
-x.run()
+host = "localhost"
+port = 9000
+
+client = Client(host, port, "Bob")
+player_game = main.Game(client)
+player_game.run()

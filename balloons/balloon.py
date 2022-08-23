@@ -9,10 +9,7 @@ class Balloon:
     def __init__(self, x=None, y=None, path_index=None):
         self.health = 1
         self.velocity = 100
-        self.img = self.img = pygame.image.load(
-            "images/balloon_images/greenballoon.png"
-        ).convert_alpha()
-        self.img = pygame.transform.smoothscale(self.img, (31, 35))
+        self.img = None
         self.path = []
         self.load()
         if not x:
@@ -27,7 +24,7 @@ class Balloon:
         self.move_distance = 0
         self.current_angle = 0
         self.damage = 1
-        self.mask = pygame.mask.from_surface(self.img)
+        self.mask = None
         self.id = None
         self.spawn = None
         self.dead = False
@@ -56,7 +53,6 @@ class Balloon:
             self.img,
             (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2),
         )
-        pygame.draw.circle(screen, "BLACK", (self.x, self.y), 3)
         # screen.blit(self.mask.to_surface(), (self.x - 11, self.y - 11))
 
     def show_path(self):
@@ -114,3 +110,6 @@ class Balloon:
 
     def is_killed(self):
         return (self.x, self.y, self.spawn, self.path_index)
+
+    def info(self):
+        return (self.x, self.y, self.id)

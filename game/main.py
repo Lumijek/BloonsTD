@@ -37,7 +37,7 @@ HEALTH_COLOR = (165, 227, 75)
 
 # in the __init__ there will be a player_type (either one or two)
 class Game:
-    def __init__(self, player_type):
+    def __init__(self, client):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Bloons Tower Defense")
         self.fps_font = pygame.font.SysFont("Arial", 24, bold=True)
@@ -47,8 +47,52 @@ class Game:
         self.load_images()
         self.clock = pygame.time.Clock()
         self.game_state = gameManager.GameManager()
-        self.player_type = player_type
+        self.client = client
+        self.client.start()
+        self.player_type = self.client.recv()
         b.Balloon.PLAYER_TYPE = self.player_type
+        self.tower_images =  {
+            "tower": t.Tower.img,
+            "dart": dm.DartMonkey.img,
+            "boomerang": bm.BoomerangMonkey.img,
+            "tacks": ts.TackShooter.img,
+            "sniper": sm.SniperMonkey.img
+        }
+        self.load_item_images()
+
+    def load_item_images(self):
+        self.balloon_images = dict()
+        red_img = pygame.image.load("images/balloon_images/bb.png").convert_alpha()
+        self.balloon_images["red"] = red_img
+        blue_img = pygame.image.load(
+            "images/balloon_images/blueballoon.png"
+        ).convert_alpha()
+        blue_img = pygame.transform.smoothscale(blue_img, (29, 33))
+        self.balloon_images["blue"] = blue_img
+        green_img = pygame.image.load(
+            "images/balloon_images/greenballoon.png"
+        ).convert_alpha()
+        green_img = pygame.transform.smoothscale(green_img, (31, 35))
+        self.balloon_images["green"] = green_img
+        yellow_img = pygame.image.load(
+            "images/balloon_images/yellowballoon.png"
+        ).convert_alpha()
+        yellow_img = pygame.transform.smoothscale(yellow_img, (33, 37))
+        self.balloon_images["yellow"] = yellow_img
+        black_img = pygame.image.load(
+            "images/balloon_images/blackballoon.png"
+        ).convert_alpha()
+        black_img = pygame.transform.smoothscale(black_img, (33, 37))
+        self.balloon_images["black"] = black_img
+
+        self.projectile_images = dict()
+        proj_img = pygame.image.load("images/projectile_images/d1.png").convert_alpha()
+        proj_img = pygame.transform.smoothscale(
+            proj_img, (proj_img.get_width() * 0.4, proj_img.get_height() * 0.4)
+        )
+
+        proj_img = pygame.transform.rotozoom(proj_img, -130, 1)
+        self.projectile_images["proj"] = proj_img
 
     def load_path(self):
         lines = []
@@ -104,14 +148,16 @@ class Game:
                 self.game_info_bg.get_height() * 1.4,
             ),
         )
-        self.bottom_bricks = pygame.transform.smoothscale(self.bottom_bricks, (WIDTH - self.player_1_bg.get_width() * 2, BOTTOM_PIXEL))
+        self.bottom_bricks = pygame.transform.smoothscale(
+            self.bottom_bricks, (WIDTH - self.player_1_bg.get_width() * 2, BOTTOM_PIXEL)
+        )
 
     def load_map(self, map_name, width, height):
 
         current_map = pygame.image.load(map_name)
-        current_map = pygame.transform.smoothscale(current_map, (WIDTH / 2 - START_PIXEL - 15, height - BOTTOM_PIXEL))
-        print(height)
-        print(height - BOTTOM_PIXEL)
+        current_map = pygame.transform.smoothscale(
+            current_map, (WIDTH / 2 - START_PIXEL - 15, height - BOTTOM_PIXEL)
+        )
 
         return current_map
 
@@ -265,6 +311,60 @@ class Game:
             str(self.game_state.get_health()), self.text_font, HEALTH_COLOR, "BLACK", 2
         )
         self.screen.blit(health_text, (START_PIXEL + 50, 4))
+
+    def send_opponent_items(self, balloons, towers, proj):
+        b = []
+        for balloon in balloons:
+            x, y, idx = balloon.info()
+            b.append(f"{round(x)} {round(y)} {idx}")
+        t = []
+        for tower in towers:
+            x, y, idx, angle = tower.info()
+            t.append(f"{round(x)} {round(y)} {idx} {round(angle)}")
+        p = []
+        for projectile in proj:
+            x, y, idx, angle = projectile.info()
+            p.append(f"{round(x)} {round(y)} {idx} {angle}")
+        self.client.send([b, t, p])
+
+    def display_opponent_items(self):
+        #Send Balloons
+        info = self.client.recv()
+        balloons, towers, projectiles = info
+        for balloon in balloons:
+            x, y, idx = balloon.split()
+            x = int(x)
+            y = int(y)
+            b_img = self.balloon_images[idx]
+            self.screen.blit(
+                b_img,
+                (x - b_img.get_width() / 2, y - b_img.get_height() / 2),
+            )
+        for tower in towers:
+            x, y, idx, angle = tower.split()
+            x = int(x)
+            y = int(y)
+            angle = int(angle)
+            c_img = self.tower_images[idx]
+            rotImg = pygame.transform.rotozoom(c_img, -math.degrees(angle) + 90, 1)
+            newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
+            self.screen.blit(c_img, newR)
+
+        for projectile in projectiles:
+            x, y, idx, angle = projectile.split()
+            x = int(x)
+            y = int(y)
+            angle = float(angle)
+            p_img = self.projectile_images[idx]
+            p_img = pygame.transform.rotozoom(
+                p_img, -math.degrees(angle), 1
+            )
+            self.screen.blit(
+                p_img,
+                (x - p_img.get_width() / 2, y - p_img.get_height() / 2),
+            )
+
+
 
     def run(self):
         proj = []
@@ -445,6 +545,9 @@ class Game:
 
             while 0 in proj:
                 proj.remove(0)
+
+            self.send_opponent_items(balloons, towers, proj)
+            self.display_opponent_items()
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
             pygame.display.update()
