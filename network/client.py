@@ -40,6 +40,7 @@ class Client:
                     return
             except Exception as e:
                 print(e)
+                print("Data:", data)
                 self.sock.close()
                 os._exit(1)
                 return

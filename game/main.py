@@ -14,6 +14,7 @@ from towers import boomerangm as bm
 from towers import tacks as ts
 from towers import sniperm as sm
 from projectiles import projectile
+from projectiles import bprojectile
 from balloons import redBalloon as rb, blueBalloon as bb
 from balloons import greenBalloon as gb
 from balloons import yellowBalloon as yb
@@ -21,6 +22,7 @@ from balloons import blackBalloon as blb
 from game import gameManager
 import random
 import socket
+import threading
 import struct
 
 pygame.init()
@@ -59,6 +61,9 @@ class Game:
             "sniper": sm.SniperMonkey.img,
         }
         self.load_item_images()
+        self.opp_state = [[], [], []]
+        self.opp_info_thread = threading.Thread(target=self.get_info)
+        self.opp_info_thread.start()
 
     def load_item_images(self):
         self.balloon_images = dict()
@@ -327,10 +332,13 @@ class Game:
             p.append(f"{round(x)} {round(y)} {idx} {angle}")
         self.client.send([b, t, p])
 
+    def get_info(self):
+        while True:
+            self.opp_state = self.client.recv()
+
     def display_opponent_items(self):
         # Send Balloons
-        info = self.client.recv()
-        balloons, towers, projectiles = info
+        balloons, towers, projectiles = self.opp_state
         for balloon in balloons:
             x, y, idx = balloon.split()
             x = int(x)
@@ -344,7 +352,7 @@ class Game:
             x, y, idx, angle = tower.split()
             x = int(x)
             y = int(y)
-            angle = float(angle) % 360
+            angle = float(angle)
             c_img = self.tower_images[idx]
             rotImg = pygame.transform.rotozoom(c_img, -math.degrees(angle) + 90, 1)
             newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
@@ -541,9 +549,14 @@ class Game:
             while 0 in proj:
                 proj.remove(0)
 
+            nad = time.perf_counter()
             self.send_opponent_items(balloons, towers, proj)
+            #print("Send time:", time.perf_counter() - nad)
+            nad = time.perf_counter()
             self.display_opponent_items()
+            #print("Display Time:", time.perf_counter() - nad)
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
             pygame.display.update()
+            #print(self.opp_state)
             self.clock.tick(120)

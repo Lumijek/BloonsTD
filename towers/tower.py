@@ -89,7 +89,7 @@ class Tower:
         self.rotate_m = True
 
     def rot(self):
-        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle) + 90, 1)
+        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle) - 90, 1)
         newR = rotImg.get_rect(center=self.img.get_rect(center=(self.x, self.y)).center)
         self.rotate_m = False
         return rotImg, newR
