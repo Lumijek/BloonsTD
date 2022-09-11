@@ -5,6 +5,8 @@ import pygame
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
     img = pygame.transform.smoothscale(img, (60, 60))
+    img = pygame.transform.rotozoom(img, 90, 1)
+
     t_range = 100
     circ_img = pygame.Surface((t_range * 2, t_range * 2))
     pygame.draw.circle(circ_img, (0, 0, 1), (t_range, t_range), t_range)
@@ -89,7 +91,7 @@ class Tower:
         self.rotate_m = True
 
     def rot(self):
-        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle) - 90, 1)
+        rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle), 1)
         newR = rotImg.get_rect(center=self.img.get_rect(center=(self.x, self.y)).center)
         self.rotate_m = False
         return rotImg, newR

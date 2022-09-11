@@ -8,6 +8,8 @@ class SniperMonkey(Tower):
 
     img = pygame.image.load("images/tower_images/sniperm.png")
     img = pygame.transform.smoothscale(img, (90, 90))
+    img = pygame.transform.rotozoom(img, 90, 1)
+
     t_range = 60
     circ_img = pygame.Surface((t_range * 2, t_range * 2))
     pygame.draw.circle(circ_img, (0, 0, 1), (t_range, t_range), t_range)

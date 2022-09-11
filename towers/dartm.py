@@ -7,6 +7,8 @@ class DartMonkey(Tower):
 
     img = pygame.image.load("images/tower_images/dartm.png")
     img = pygame.transform.smoothscale(img, (70, 70))
+    img = pygame.transform.rotozoom(img, 90, 1)
+
     t_range = 100
     circ_img = pygame.Surface((t_range * 2, t_range * 2))
     pygame.draw.circle(circ_img, (0, 0, 1), (t_range, t_range), t_range)
