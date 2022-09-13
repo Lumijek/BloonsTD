@@ -354,6 +354,7 @@ class Game:
             y = int(y)
             angle = float(angle)
             c_img = self.tower_images[idx]
+            print(-math.degrees(angle))
             rotImg = pygame.transform.rotozoom(c_img, -math.degrees(angle), 1)
             newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
             self.screen.blit(rotImg, newR)

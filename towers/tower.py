@@ -70,7 +70,9 @@ class Tower:
             )
         if self.rotate_m:
             self.drawnImg, self.nr = self.rot()
-            self.prev_angle += self.angle
+            print("o :", -math.degrees(self.angle))
+            self.prev_angle = self.angle
+            print("opre:", -math.degrees(self.prev_angle))
             self.angle = 0
         screen.blit(self.drawnImg, self.nr)
 
