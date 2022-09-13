@@ -12,8 +12,8 @@ class Boomerang(Projectile):
         self.boomerang = pygame.Surface((rad * 2, rad * 2))
         pygame.draw.circle(self.boomerang, "RED", (rad, rad), rad)
         self.mask = pygame.mask.from_surface(self.boomerang)
-        self.angle = 0.0
         self.shot = False
+        self.angle = None
 
 
     def f(self, t):
@@ -44,17 +44,14 @@ class Boomerang(Projectile):
         x, y = balloon.get_x(), balloon.get_y()
         diffX = x - self.x
         diffY = y - self.y
-        angle = math.atan2(diffY, diffX)
-        var = self.get_curve([self.x, self.y], angle, 1, delta_time)
+        self.angle = round(math.atan2(diffY, diffX), 4)
+        var = self.get_curve([self.x, self.y], self.angle, 1, delta_time)
 
         return True
 
     def draw(self, screen, delta_time):
         if self.shot == True and self.i < self.i_max:
-            try:
-                screen.blit(self.boomerang, (self.b_path[self.i][0], self.b_path[self.i][1]))
-            except:
-                print(self.i, self.i_max)
+            screen.blit(self.boomerang, (self.b_path[self.i][0], self.b_path[self.i][1]))
             self.i += 1
         else:
             self.shot = False

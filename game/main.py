@@ -354,7 +354,6 @@ class Game:
             y = int(y)
             angle = float(angle)
             c_img = self.tower_images[idx]
-            print(-math.degrees(angle))
             rotImg = pygame.transform.rotozoom(c_img, -math.degrees(angle), 1)
             newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
             self.screen.blit(rotImg, newR)
@@ -412,6 +411,8 @@ class Game:
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         # print(len(towers))
+                        print("here")
+                        currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
                             dm.DartMonkey.img,

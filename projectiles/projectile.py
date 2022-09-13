@@ -45,7 +45,7 @@ class Projectile:
                     tempX,
                     tempY,
                 ):
-                    self.angle = math.atan2(diffY, diffX)
+                    self.angle = round(math.atan2(diffY, diffX), 2)
                     self.img = pygame.transform.rotozoom(
                         self.img, -math.degrees(self.angle), 1
                     )
