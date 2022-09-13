@@ -498,7 +498,7 @@ class Game:
                         ),
                     ):
                         if tower.can_shoot():
-                            pr = projectile.Projectile(
+                            pr = bprojectile.Boomerang(
                                 tower.get_center_x(), tower.get_center_y()
                             )
                             path, path_index = balloon.get_path_details()
