@@ -10,5 +10,4 @@ Run instructions:
 
 # Current TODOS:
 
-1. Towers don't rotate on the opponent side
-2. A lot of UI is not complete(name, opponent health bar)
+1. A lot of UI is not complete(name, opponent health bar)
