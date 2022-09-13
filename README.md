@@ -11,3 +11,4 @@ Run instructions:
 # Current TODOS:
 
 1. A lot of UI is not complete(name, opponent health bar)
+2. Socket data is being cut off
