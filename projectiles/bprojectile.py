@@ -1,80 +1,61 @@
-from cmath import sqrt
 from projectiles.projectile import Projectile
-import numpy, math
+import numpy as np
+import math
 import pygame
-
+import time
 
 class Boomerang(Projectile):
     def __init__(self, starting_x, starting_y):
         super().__init__(starting_x, starting_y)
         self.durability = 5
-        self.tot_dis = 400
-        self.dist_toTravel = []
+        rad = 6
+        self.boomerang = pygame.Surface((rad * 2, rad * 2))
+        pygame.draw.circle(self.boomerang, "RED", (rad, rad), rad)
+        self.mask = pygame.mask.from_surface(self.boomerang)
+        self.angle = 0.0
+        self.shot = False
+
+
+    def f(self, t):
+        return math.cos(2 * t) * math.cos(t)
+
+    def g(self, t):
+        return math.cos(2 * t) * math.sin(t)
+
+    def get_curve(self, start, angle, time, dt, mode="radians"):
+        scale = 200
+        t = -math.pi / 4
+        steps = int(time / dt)
+        cos = math.cos(angle)
+        sin = math.sin(angle)
+        t_step = (math.pi / 2) / steps #difference in start t and end t divided by 2
+        l = []
+        for i in range(steps):
+            t += t_step
+            x = (self.f(t) * cos - self.g(t) * sin)
+            y = (self.f(t) * sin + self.g(t) * cos)
+            l.append((x * scale + start[0], y * scale + start[1]))
+        self.b_path = l
+        self.i = 0
+        self.i_max = steps
+        self.shot = True
 
     def projectile_target(self, balloon, path, path_index, delta_time):
-        rangeBX = balloon.get_x()
-        rangeBY = balloon.get_y()
-        diffX = rangeBX - self.x
-        diffY = rangeBY - self.y
-        run = True
-        count = 0
-        while run:
+        x, y = balloon.get_x(), balloon.get_y()
+        diffX = x - self.x
+        diffY = y - self.y
+        angle = math.atan2(diffY, diffX)
+        var = self.get_curve([self.x, self.y], angle, 1, delta_time)
 
-            count += 1
+        return True
 
-            if (count * self.velocity * delta_time) ** 2 >= diffX**2 + diffY**2:
-                run = False
-                diffX += balloon.get_x_velocity() * delta_time
-                diffY += balloon.get_y_velocity() * delta_time
-                tempX = rangeBX + balloon.get_x_velocity() * (count) * delta_time
-                tempY = rangeBY + balloon.get_y_velocity() * (count) * delta_time
-                if self.inCheck(
-                    path[path_index][0],
-                    path[path_index][1],
-                    path[path_index + 1][0],
-                    path[path_index + 1][1],
-                    tempX,
-                    tempY,
-                ):
-                    self.angle = math.atan2(diffY, diffX)
-                    self.img = pygame.transform.rotozoom(
-                        self.img, -math.degrees(self.angle), 1
-                    )
-                    self.mask = pygame.mask.from_surface(self.img)
-                    self.dist_toTravel = [diffX, diffY]
-                    return True
+    def draw(self, screen, delta_time):
+        if self.shot == True and self.i < self.i_max:
+            try:
+                screen.blit(self.boomerang, (self.b_path[self.i][0], self.b_path[self.i][1]))
+            except:
+                print(self.i, self.i_max)
+            self.i += 1
+        else:
+            self.shot = False
 
-                else:
-                    return False
-
-            diffX += balloon.get_x_velocity() * delta_time
-            diffY += balloon.get_y_velocity() * delta_time
-            if count >= 100:
-                run = False
-                self.angle = 0
-
-    def getAngles(self, first_angle):
-        tot_travel = sqrt(self.dist_toTravel[0] ** 2 + self.dist_toTravel[1] ** 2)
-        one_way = self.tot_dis / 2 - tot_travel
-        min_val = min(self.dist_toTravel[0], self.dist_toTravel[1])
-        s_sq = one_way**2 - min_val**2
-        return math.atan2(min_val, sqrt(s_sq))
-
-    def move_projectile(self, delta_time):
-        angles = []
-        if self.angle != None:
-            angles.append(self.angle)
-            z = self.getAngles(self.angle)
-            angles.append(z)
-            angles.append(z)
-            angles.append(self.angle)
-            for i in range(len(angles)):
-                a = angles[i]
-                if i <= 1:
-                    self.x += math.cos(a) * self.velocity * delta_time
-                    self.y += math.sin(a) * self.velocity * delta_time
-                    self.dis_traveled += self.velocity * delta_time
-                else:
-                    self.x += math.cos(a) * self.velocity * delta_time
-                    self.y += math.sin(a) * self.velocity * delta_time
-                    self.dis_traveled += self.velocity * delta_time
