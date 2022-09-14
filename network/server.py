@@ -55,7 +55,7 @@ class Server:
     def handle_client(self, client):
         while True:
             try:
-                data = client.recv(4096)
+                data = client.recv(8192)
                 if pickle.loads(data) == "q":
                     client.close()
                     return

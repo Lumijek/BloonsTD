@@ -411,7 +411,6 @@ class Game:
                         # self.screen.blit(circ,(x - circ.get_width() / 2, y - circ.get_width() / 2))
                     if event.key == pygame.K_1:
                         # print(len(towers))
-                        print("here")
                         currentTshirt = "DartMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
@@ -499,7 +498,8 @@ class Game:
                         ),
                     ):
                         if tower.can_shoot():
-                            pr = bprojectile.Boomerang(
+                            c_proj = tower.get_projectile()
+                            pr = c_proj(
                                 tower.get_center_x(), tower.get_center_y()
                             )
                             path, path_index = balloon.get_path_details()

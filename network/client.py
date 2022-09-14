@@ -5,7 +5,8 @@ import os
 import signal
 import pickle
 import pygame
-
+import time
+import struct
 
 class Client:
     def __init__(self, host, port, name):
@@ -19,6 +20,8 @@ class Client:
     def send(self, data):
         try:
             data = pickle.dumps(data)
+            length = struct.pack('>I', len(data))
+            #self.sock.sendall(length)
             self.sock.sendall(data)
         except Exception as e:
             print("Error sending data.")
@@ -29,21 +32,21 @@ class Client:
             return
 
     def recv(self):
-        while True:
-            try:
-                data = self.sock.recv(4096)
-                data = pickle.loads(data)
-                return data
-                if data == "Server shutting down!":
-                    self.sock.close()
-                    os._exit(1)
-                    return
-            except Exception as e:
-                print(e)
-                print("Data:", data)
+        try:
+
+            data = self.sock.recv(8192)
+            data = pickle.loads(data)
+            return data
+            if data == "Server shutting down!":
                 self.sock.close()
                 os._exit(1)
                 return
+        except Exception as e:
+            print(e)
+            print("Data:", data)
+            self.sock.close()
+            os._exit(1)
+            return
 
     def kill_client(self, sig, frame):
         self.sock.sendall("q".encode())

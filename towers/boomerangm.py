@@ -1,6 +1,7 @@
 import math
 import pygame
 from towers.tower import Tower
+from projectiles.bprojectile import Boomerang
 
 
 class BoomerangMonkey(Tower):
@@ -28,3 +29,5 @@ class BoomerangMonkey(Tower):
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "boomerang"
+        self.projectile = Boomerang
+

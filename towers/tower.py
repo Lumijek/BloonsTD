@@ -1,6 +1,6 @@
 import math
 import pygame
-
+from projectiles.projectile import Projectile
 
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
@@ -32,6 +32,7 @@ class Tower:
         self.rotate_m = False
         self.angle = 0
         self.prev_angle = 0
+        self.projectile = Projectile
 
     def in_range(self, balloon_mask, balloon_coords):
         return not (
@@ -98,3 +99,7 @@ class Tower:
 
     def info(self):
         return (self.x, self.y, self.id, self.prev_angle)
+
+    def get_projectile(self):
+        return self.projectile
+
