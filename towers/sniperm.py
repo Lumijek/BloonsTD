@@ -2,6 +2,7 @@ from cmath import inf
 import math
 import pygame
 from towers.tower import Tower
+from projectiles.snprojectile import SProjectile
 
 
 class SniperMonkey(Tower):
@@ -28,6 +29,7 @@ class SniperMonkey(Tower):
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "sniper"
+        self.projectile = SProjectile
 
     def in_range(self, balloon_mask, balloon_coords):
         return True
