@@ -21,3 +21,9 @@ class SProjectile(Projectile):
         self.dead = False
         self.durability = 1
         self.id = "snproj"
+    def projectile_target(self, balloon, path, path_index, delta_time):
+        x, y = balloon.get_x(), balloon.get_y()
+        diffX = x - self.x
+        diffY = y - self.y
+        self.angle = round(math.atan2(diffY, diffX), 4)
+        return False
