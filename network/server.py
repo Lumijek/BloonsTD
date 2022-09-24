@@ -35,12 +35,16 @@ class Server:
                 self.connections[player1] = player2
                 self.connections[player2] = player1
                 player_select = random.uniform(0, 1)
+                f1 = player1.makefile(mode='wb')
+                f2 = player2.makefile(mode='wb')
                 if player_select > 0.5:
-                    player1.sendall(pickle.dumps("one"))
-                    player2.sendall(pickle.dumps("two"))
+                    pickle.dump("one", f1)
+                    pickle.dump("two", f2)
                 else:
-                    player1.sendall(pickle.dumps("two"))
-                    player2.sendall(pickle.dumps("one"))
+                    pickle.dump("two", f1)
+                    pickle.dump("one", f2)
+                f1.close()
+                f2.close()
                 player1_thread = threading.Thread(
                     target=self.handle_client, args=(player1,)
                 )
@@ -55,20 +59,27 @@ class Server:
     def handle_client(self, client):
         while True:
             try:
-                data = client.recv(8192)
-                if pickle.loads(data) == "q":
-                    client.close()
-                    return
+                f = client.makefile(mode='rb')
+                unpkl = pickle.Unpickler(f)
+                data = unpkl.load()
                 self.send(self.connections[client], data)
-
+                f.close()
             except Exception as e:
+                print(e)
+                continue
+                print(e)
+                print(data)
+                self.sock.close()
                 client.close()
                 return
 
     def send(self, client, data):
         try:
-            client.sendall(data)
+            f = client.makefile(mode='wb')
+            pickle.dump(data, f)
+            f.close()
         except Exception as e:
+            #print("close4", time.time())
             self.sock.close()
             client.close()
             return

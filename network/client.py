@@ -20,11 +20,11 @@ class Client:
 
     def send(self, data):
         try:
-            data = pickle.dumps(data)
-            length = struct.pack(">I", len(data))
-            # self.sock.sendall(length)
-            self.sock.sendall(data)
+            f = self.sock.makefile(mode='wb')
+            pickle.dump(data, f)
+            f.close()
         except Exception as e:
+            print("close1", time.time())
             print("Error sending data.")
             print(e)
             print(data)
@@ -34,15 +34,17 @@ class Client:
 
     def recv(self):
         try:
-
-            data = self.sock.recv(8192)
-            data = pickle.loads(data)
+            f = self.sock.makefile(mode='rb')
+            unpkl = pickle.Unpickler(f)
+            data = unpkl.load()
+            f.close()
             return data
             if data == "Server shutting down!":
                 self.sock.close()
                 os._exit(1)
                 return
         except Exception as e:
+            print("close2", time.time())
             print(e)
             print("Data:", data)
             self.sock.close()
