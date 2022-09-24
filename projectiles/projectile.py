@@ -20,7 +20,7 @@ class Projectile:
         self.durability = 1
         self.id = "proj"
 
-    def projectile_target(self, balloon, path, path_index, delta_time):
+    def projectile_target(self, tower, balloon, path, path_index, delta_time):
         rangeBX = balloon.get_x()
         rangeBY = balloon.get_y()
         diffX = rangeBX - self.x
@@ -45,15 +45,26 @@ class Projectile:
                     tempX,
                     tempY,
                 ):
-                    self.angle = round(math.atan2(diffY, diffX), 2)
+                    self.angle = round(math.atan2(diffY, diffX), 4)
                     self.img = pygame.transform.rotozoom(
                         self.img, -math.degrees(self.angle), 1
                     )
                     self.mask = pygame.mask.from_surface(self.img)
+                    tower.angle = round(self.angle, 3)
+                    tower.rotate_m = True
+                    tower.is_reloading = True
                     return True
 
                 else:
-                    return False
+                    self.angle = round(math.atan2(rangeBY - self.y, rangeBX - self.x))
+                    self.img = pygame.transform.rotozoom(
+                        self.img, -math.degrees(self.angle), 1
+                    )
+                    self.mask = pygame.mask.from_surface(self.img)
+                    tower.angle = round(self.angle, 3)
+                    tower.rotate_m = True
+                    tower.is_reloading = True
+                    return True
 
             diffX += balloon.get_x_velocity() * delta_time
             diffY += balloon.get_y_velocity() * delta_time

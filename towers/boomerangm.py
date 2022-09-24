@@ -24,10 +24,7 @@ class BoomerangMonkey(Tower):
         self.damage = None
         self.img.convert_alpha()
         self.img.set_alpha(255)
-        self.reload_tick = [0, 20]  # number of frames to wait before shooting again
-        self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "boomerang"
         self.projectile = Boomerang
-

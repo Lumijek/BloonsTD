@@ -2,6 +2,7 @@ import math
 import pygame
 from projectiles.projectile import Projectile
 
+
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
     img = pygame.transform.smoothscale(img, (60, 60))
@@ -87,10 +88,6 @@ class Tower:
     def get_width(self):
         return self.width
 
-    def projFired(self, angle):
-        self.angle = round(angle, 3)
-        self.rotate_m = True
-
     def rot(self):
         rotImg = pygame.transform.rotozoom(self.img, -math.degrees(self.angle), 1)
         newR = rotImg.get_rect(center=self.img.get_rect(center=(self.x, self.y)).center)
@@ -102,4 +99,3 @@ class Tower:
 
     def get_projectile(self):
         return self.projectile
-

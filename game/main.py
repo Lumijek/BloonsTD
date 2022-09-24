@@ -358,7 +358,6 @@ class Game:
             newR = rotImg.get_rect(center=c_img.get_rect(center=(x, y)).center)
             self.screen.blit(rotImg, newR)
 
-
         for projectile in projectiles:
             x, y, idx, angle = projectile.split()
             x = int(x)
@@ -372,7 +371,7 @@ class Game:
             )
 
     def run(self):
-        proj = []
+        projectiles = []
         towers = []
         balloons = []
         tower_images = {
@@ -491,7 +490,7 @@ class Game:
                         for jib in range(len(bL)):
                             new_balloons1.append(bL[jib])
                     balloons.remove(balloon)
-                balloons += new_balloons1  
+                balloons += new_balloons1
 
             for tower in towers:
                 tower.draw(self.screen)
@@ -504,44 +503,38 @@ class Game:
                         ),
                     ):
                         if tower.can_shoot():
-                            c_proj = tower.get_projectile()
-                            pr = c_proj(
+                            c_projectile = tower.get_projectile()
+                            pr = c_projectile(
                                 tower.get_center_x(), tower.get_center_y()
                             )
                             path, path_index = balloon.get_path_details()
-                            if pr.projectile_target(
-                                balloon, path, path_index, delta_time
-                            ):
-                                tower.projFired(pr.angle)
-                                proj.append(pr)
-                                tower.is_reloading = True
-                                break
+                            pr.projectile_target(
+                                tower, balloon, path, path_index, delta_time
+                            )
+                            if pr.img != None:
+                                projectiles.append(pr)
+                            break
 
                 tower.reload(delta_time)
 
             new_balloons = []
-            for i in range(len(proj)):
-                proj[i].draw(self.screen, delta_time)
-                projectile_mask = proj[i].get_mask()
+            for i in range(len(projectiles)):
+                projectiles[i].draw(self.screen, delta_time)
+                projectile_mask = projectiles[i].get_mask()
                 for balloon in balloons:
                     if balloon.is_collided(
                         projectile_mask,
                         (
-                            proj[i].get_x() - proj[i].img.get_width() / 2,
-                            proj[i].get_y() - proj[i].img.get_height() / 2,
+                            projectiles[i].get_x() - projectiles[i].img.get_width() / 2,
+                            projectiles[i].get_y()
+                            - projectiles[i].img.get_height() / 2,
                         ),
                     ):
                         balloon.dead = True
-                        # proj[i].durability -= 1
-                        #bL = self.inst_balloon(balloon.is_killed())
-                        #if bL is not None:
-                        #    for jib in range(len(bL)):
-                        #        new_balloons.append(bL[jib])
-                        proj[i].kill_projectile()
-                        #balloons.remove(balloon)
+                        projectiles[i].kill_projectile()
 
-                if proj[i].projectile_dead():
-                    proj[i] = 0
+                if projectiles[i].projectile_dead():
+                    projectiles[i] = 0
             balloons += new_balloons
             x, y = pygame.mouse.get_pos()
             if currentTshirt != None:
@@ -554,17 +547,12 @@ class Game:
                     img, (x - img.get_width() / 2, y - img.get_height() / 2)
                 )
 
-            while 0 in proj:
-                proj.remove(0)
+            while 0 in projectiles:
+                projectiles.remove(0)
 
-            nad = time.perf_counter()
-            self.send_opponent_items(balloons, towers, proj)
-            #print("Send time:", time.perf_counter() - nad)
-            nad = time.perf_counter()
+            self.send_opponent_items(balloons, towers, projectiles)
             self.display_opponent_items()
-            #print("Display Time:", time.perf_counter() - nad)
             self.display_images(self.game_state.get_player_health_ratio())
             self.display_game_information()
             pygame.display.update()
-            #print(self.opp_state)
             self.clock.tick(120)

@@ -8,6 +8,7 @@ import pygame
 import time
 import struct
 
+
 class Client:
     def __init__(self, host, port, name):
         self.event = threading.Event()
@@ -20,8 +21,8 @@ class Client:
     def send(self, data):
         try:
             data = pickle.dumps(data)
-            length = struct.pack('>I', len(data))
-            #self.sock.sendall(length)
+            length = struct.pack(">I", len(data))
+            # self.sock.sendall(length)
             self.sock.sendall(data)
         except Exception as e:
             print("Error sending data.")

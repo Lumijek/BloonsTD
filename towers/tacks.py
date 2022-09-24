@@ -23,8 +23,6 @@ class TackShooter(Tower):
         self.price = None
         self.damage = None
         self.img.convert_alpha()
-        self.reload_tick = [0, 20]  # number of frames to wait before shooting again
-        self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "tacks"

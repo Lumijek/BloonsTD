@@ -1,4 +1,3 @@
-
 import math
 import pygame
 from towers.tower import Tower
@@ -23,9 +22,8 @@ class SniperMonkey(Tower):
         self.y = y
         self.price = None
         self.damage = None
+        self.reload_time = 1.2
         self.img.convert_alpha()
-        self.reload_tick = [0, 20]  # number of frames to wait before shooting again
-        self.is_reloading = False
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "sniper"
