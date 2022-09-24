@@ -484,8 +484,14 @@ class Game:
 
             for balloon in balloons:
                 balloon.draw(self.screen, delta_time)
+                new_balloons1 = []
                 if balloon.dead:
+                    bL = self.inst_balloon(balloon.is_killed())
+                    if bL is not None:
+                        for jib in range(len(bL)):
+                            new_balloons1.append(bL[jib])
                     balloons.remove(balloon)
+                balloons += new_balloons1  
 
             for tower in towers:
                 tower.draw(self.screen)
@@ -525,14 +531,14 @@ class Game:
                             proj[i].get_y() - proj[i].img.get_height() / 2,
                         ),
                     ):
-
+                        balloon.dead = True
                         # proj[i].durability -= 1
-                        bL = self.inst_balloon(balloon.is_killed())
-                        if bL is not None:
-                            for jib in range(len(bL)):
-                                new_balloons.append(bL[jib])
+                        #bL = self.inst_balloon(balloon.is_killed())
+                        #if bL is not None:
+                        #    for jib in range(len(bL)):
+                        #        new_balloons.append(bL[jib])
                         proj[i].kill_projectile()
-                        balloons.remove(balloon)
+                        #balloons.remove(balloon)
 
                 if proj[i].projectile_dead():
                     proj[i] = 0

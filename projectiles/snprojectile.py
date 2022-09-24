@@ -16,7 +16,7 @@ class SProjectile(Projectile):
         #)
         #self.img = pygame.transform.rotozoom(self.img, -130, 1)
         self.angle = None
-        self.tot_dis = 500
+        self.tot_dis = 750
         self.dis_traveled = 0
         self.dead = False
         self.durability = 1
