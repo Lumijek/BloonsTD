@@ -14,6 +14,6 @@ class BlackBalloon(Balloon):
 
         self.health = 4
         self.damage = 4
-        self.spawn = ["2yellow", "1green"]
+        self.spawn = ["2yellow"]
         self.id = "black"
         self.velocity = 115

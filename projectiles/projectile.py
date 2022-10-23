@@ -79,6 +79,7 @@ class Projectile:
 
     def move_projectile(self, delta_time):
         if self.angle != None:
+            
             self.x += math.cos(self.angle) * self.velocity * delta_time
             self.y += math.sin(self.angle) * self.velocity * delta_time
             self.dis_traveled += self.velocity * delta_time

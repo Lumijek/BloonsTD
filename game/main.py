@@ -11,7 +11,7 @@ from balloons import balloon as b
 from towers import tower as t
 from towers import dartm as dm
 from towers import boomerangm as bm
-from towers import tacks as ts
+from towers import superm as sp
 from towers import sniperm as sm
 from projectiles import projectile
 from projectiles import bprojectile
@@ -57,7 +57,7 @@ class Game:
             "tower": t.Tower.img,
             "dart": dm.DartMonkey.img,
             "boomerang": bm.BoomerangMonkey.img,
-            "tacks": ts.TackShooter.img,
+            "super": sp.SuperMonkey.img,
             "sniper": sm.SniperMonkey.img,
         }
         self.load_item_images()
@@ -255,30 +255,30 @@ class Game:
             if balloon_id == "red":
                 for j in range(num):
                     if path_index % 2 == 0:
-                        y = y - (j + c) * 10
+                        y = y - (j + c) * 5
                     else:
-                        x = x - (j + c) * 10
+                        x = x - (j + c) * 5
                     rBal.append(rb.RedBalloon(x, y, path_index))
             if balloon_id == "blue":
                 for j in range(num):
                     if path_index % 2 == 0:
-                        y = y - (j + c) * 10
+                        y = y - (j + c) * 5
                     else:
-                        x = x - (j + c) * 10
+                        x = x - (j + c) * 5
                     rBal.append(bb.BlueBalloon(x, y, path_index))
             if balloon_id == "green":
                 for j in range(num):
                     if path_index % 2 == 0:
-                        y = y - (j + c) * 10
+                        y = y - (j + c) * 5
                     else:
-                        x = x - (j + c) * 10
+                        x = x - (j + c) * 5
                     rBal.append(gb.GreenBalloon(x, y, path_index))
             if balloon_id == "yellow":
                 for j in range(num):
                     if path_index % 2 == 0:
-                        y = y - (j + c) * 10
+                        y = y - (j + c) * 5
                     else:
-                        x = x - (j + c) * 10
+                        x = x - (j + c) * 5
                     rBal.append(yb.YellowBalloon(x, y, path_index))
             c += 1
         return rBal
@@ -378,7 +378,7 @@ class Game:
             "Tower": [t.Tower.img, t.Tower.circ_img],
             "DartMonkey": [dm.DartMonkey.img, dm.DartMonkey.circ_img],
             "BoomerangMonkey": [bm.BoomerangMonkey.img, bm.BoomerangMonkey.circ_img],
-            "TackShooter": [ts.TackShooter.img, ts.TackShooter.circ_img],
+            "SuperMonkey": [sp.SuperMonkey.img, sp.SuperMonkey.circ_img],
             "SniperMonkey": [sm.SniperMonkey.img, sm.SniperMonkey.circ_img],
         }
         currentTshirt = None
@@ -430,13 +430,13 @@ class Game:
                             ),
                         )
                     if event.key == pygame.K_3:
-                        currentTshirt = "TackShooter"
+                        currentTshirt = "SuperMonkey"
                         x, y = pygame.mouse.get_pos()
                         self.screen.blit(
-                            ts.TackShooter.img,
+                            sp.SuperMonkey.img,
                             (
-                                x - ts.TackShooter.img.get_width() / 2,
-                                y - ts.TackShooter.img.get_height() / 2,
+                                x - sp.SuperMonkey.img.get_width() / 2,
+                                y - sp.SuperMonkey.img.get_height() / 2,
                             ),
                         )
                     if event.key == pygame.K_4:
@@ -460,8 +460,8 @@ class Game:
                         twr = dm.DartMonkey(x, y)
                     elif currentTshirt == "BoomerangMonkey":
                         twr = bm.BoomerangMonkey(x, y)
-                    elif currentTshirt == "TackShooter":
-                        twr = ts.TackShooter(x, y)
+                    elif currentTshirt == "SuperMonkey":
+                        twr = sp.SuperMonkey(x, y)
                     elif currentTshirt == "SniperMonkey":
                         twr = sm.SniperMonkey(x, y)
                     else:

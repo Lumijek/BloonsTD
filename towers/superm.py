@@ -1,16 +1,16 @@
-from cmath import inf
 import math
 import pygame
+from projectiles.superprojectile import SuperProjectile
 from towers.tower import Tower
 
 
-class TackShooter(Tower):
+class SuperMonkey(Tower):
 
-    img = pygame.image.load("images/tower_images/tacks.png")
+    img = pygame.image.load("images/tower_images/supermonkey.png")
     img = pygame.transform.smoothscale(img, (60, 60))
-    img = pygame.transform.rotozoom(img, 90, 1)
+    img = pygame.transform.rotozoom(img, -90, 1)
 
-    t_range = 100
+    t_range = 175
     circ_img = pygame.Surface((t_range * 2, t_range * 2))
     pygame.draw.circle(circ_img, (0, 0, 1), (t_range, t_range), t_range)
     circ_img.set_colorkey("Black")
@@ -23,9 +23,8 @@ class TackShooter(Tower):
         self.price = None
         self.damage = None
         self.img.convert_alpha()
+        self.reload_time = 0.1
         self.width = self.img.get_width()
         self.height = self.img.get_height()
-        self.id = "tacks"
-
-    def projFired(self, angle):
-        self.rotate_m = False
+        self.id = "super"
+        self.projectile = SuperProjectile

@@ -13,6 +13,6 @@ class YellowBalloon(Balloon):
         self.mask = pygame.mask.from_surface(self.img)
         self.health = 4
         self.damage = 4
-        self.spawn = ["2green"]
+        self.spawn = ["1green","1blue"]
         self.id = "yellow"
         self.velocity = 100

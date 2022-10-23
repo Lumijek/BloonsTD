@@ -15,6 +15,7 @@ class Boomerang(Projectile):
         self.mask = pygame.mask.from_surface(self.boomerang)
         self.shot = False
         self.angle = None
+        self.id = "boomerang"
 
     def f(self, t):
         return math.cos(2 * t) * math.cos(t)

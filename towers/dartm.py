@@ -1,5 +1,7 @@
 import math
 import pygame
+from projectiles.projectile import Projectile
+
 from towers.tower import Tower
 
 
@@ -25,3 +27,4 @@ class DartMonkey(Tower):
         self.width = self.img.get_width()
         self.height = self.img.get_height()
         self.id = "dart"
+        self.projectile = Projectile
