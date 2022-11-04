@@ -98,6 +98,8 @@ class Game:
 
         proj_img = pygame.transform.rotozoom(proj_img, -130, 1)
         self.projectile_images["proj"] = proj_img
+        self.projectile_images["boomerang"] = proj_img
+        self.projectile_images["superproj"] = proj_img
 
     def load_path(self):
         lines = []
