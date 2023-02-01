@@ -6,7 +6,6 @@ from towers.tower import Tower
 
 
 class DartMonkey(Tower):
-
     img = pygame.image.load("images/tower_images/dartm.png")
     img = pygame.transform.smoothscale(img, (70, 70))
     img = pygame.transform.rotozoom(img, 90, 1)

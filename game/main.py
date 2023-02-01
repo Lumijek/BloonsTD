@@ -37,6 +37,7 @@ MONEY_COLOR = (220, 220, 220)
 ECO_COLOR = (30, 220, 0)
 HEALTH_COLOR = (165, 227, 75)
 
+
 # in the __init__ there will be a player_type (either one or two)
 class Game:
     def __init__(self, client):
@@ -160,7 +161,6 @@ class Game:
         )
 
     def load_map(self, map_name, width, height):
-
         current_map = pygame.image.load(map_name)
         current_map = pygame.transform.smoothscale(
             current_map, (WIDTH / 2 - START_PIXEL - 15, height - BOTTOM_PIXEL)
@@ -394,7 +394,6 @@ class Game:
             previous_time = time.perf_counter()
 
             for event in pygame.event.get():
-
                 if event.type == pygame.KEYDOWN:
                     bbb = blb.BlackBalloon()
                     balloons.append(bbb)

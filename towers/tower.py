@@ -2,6 +2,7 @@ import math
 import pygame
 from projectiles.projectile import Projectile
 
+
 class Tower:
     img = pygame.image.load("images/tower_images/tt.png")
     img = pygame.transform.smoothscale(img, (60, 60))
@@ -53,7 +54,6 @@ class Tower:
         self.time_since_reload += dt
 
     def can_shoot(self):
-
         if self.time_since_reload >= self.reload_time:
             self.time_since_reload = 0
             self.reloading = True
@@ -107,4 +107,3 @@ class Tower:
 
     def get_projectile(self):
         return self.projectile
-

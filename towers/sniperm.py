@@ -5,7 +5,6 @@ from projectiles.snprojectile import SProjectile
 
 
 class SniperMonkey(Tower):
-
     img = pygame.image.load("images/tower_images/sniperm.png")
     img = pygame.transform.smoothscale(img, (90, 90))
     img = pygame.transform.rotozoom(img, 90, 1)

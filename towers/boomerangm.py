@@ -5,7 +5,6 @@ from projectiles.bprojectile import Boomerang
 
 
 class BoomerangMonkey(Tower):
-
     img = pygame.image.load("images/tower_images/boomerangm.png")
     img = pygame.transform.smoothscale(img, (60, 60))
     img = pygame.transform.rotozoom(img, 90, 1)

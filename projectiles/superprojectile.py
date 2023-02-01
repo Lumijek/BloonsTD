@@ -2,6 +2,8 @@ from projectiles.projectile import Projectile
 import math
 import numpy as np
 import pygame
+
+
 class SuperProjectile(Projectile):
     def __init__(self, starting_x, starting_y):
         super().__init__(starting_x, starting_y)
@@ -16,6 +18,7 @@ class SuperProjectile(Projectile):
         self.total_time = 0
         self.tot_dis = 400
         self.id = "superproj"
+
     def move_projectile(self, delta_time):
         self.total_time += delta_time
         if self.angle != None:

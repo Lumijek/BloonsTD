@@ -5,7 +5,6 @@ from towers.tower import Tower
 
 
 class SuperMonkey(Tower):
-
     img = pygame.image.load("images/tower_images/supermonkey.png")
     img = pygame.transform.smoothscale(img, (60, 60))
     img = pygame.transform.rotozoom(img, -90, 1)

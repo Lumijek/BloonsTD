@@ -20,7 +20,7 @@ class Client:
 
     def send(self, data):
         try:
-            f = self.sock.makefile(mode='wb')
+            f = self.sock.makefile(mode="wb")
             pickle.dump(data, f)
             f.close()
         except Exception as e:
@@ -34,7 +34,7 @@ class Client:
 
     def recv(self):
         try:
-            f = self.sock.makefile(mode='rb')
+            f = self.sock.makefile(mode="rb")
             unpkl = pickle.Unpickler(f)
             data = unpkl.load()
             f.close()
@@ -58,7 +58,6 @@ class Client:
         os._exit()
 
     def start(self):
-
         name = "BOB"
         self.sock.connect(self.addr)
         self.sock.sendall(name.encode())

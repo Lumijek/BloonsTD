@@ -35,8 +35,8 @@ class Server:
                 self.connections[player1] = player2
                 self.connections[player2] = player1
                 player_select = random.uniform(0, 1)
-                f1 = player1.makefile(mode='wb')
-                f2 = player2.makefile(mode='wb')
+                f1 = player1.makefile(mode="wb")
+                f2 = player2.makefile(mode="wb")
                 if player_select > 0.5:
                     pickle.dump("one", f1)
                     pickle.dump("two", f2)
@@ -59,7 +59,7 @@ class Server:
     def handle_client(self, client):
         while True:
             try:
-                f = client.makefile(mode='rb')
+                f = client.makefile(mode="rb")
                 unpkl = pickle.Unpickler(f)
                 data = unpkl.load()
                 self.send(self.connections[client], data)
@@ -75,11 +75,11 @@ class Server:
 
     def send(self, client, data):
         try:
-            f = client.makefile(mode='wb')
+            f = client.makefile(mode="wb")
             pickle.dump(data, f)
             f.close()
         except Exception as e:
-            #print("close4", time.time())
+            # print("close4", time.time())
             self.sock.close()
             client.close()
             return
